@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Book Store" />
+    <meta name="author" content="" />
+    <title>Cart</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="../css/styles.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav id="mainNav">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">Book & Beyond</a>
+            <div class="navbar-menu"></div>
+        </div>
+    </nav>
+
+    <header class="masthead" style="background-image: url('assets/img/bookstore-bg.jpg')">
+        <div class="container">
+            <div class="site-heading">
+                <h1>Shopping Cart</h1>
+            </div>
+        </div>
+    </header>
+
+    <section id="cart">
+        <div class="container">
+            <h2 class="px-5 p-2">My Shopping Cart</h2>
+            <div class="cart">
+                <div class="col-md-12 col-lg-10 mx-auto">
+
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item">
+                                <img src="../static/images/book2.jpg" alt="Book">
+                                <h5>Book Title</h5>
+                            </div>
+
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button id="phone-minus" class="btn"><i class="fas fa-minus"></i></button>
+                                    <input id="phone-number" type="number" min="0" class="form-control text-center" value="1">
+                                    <button id="phone-plus" class="btn"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <h5>$ <span id="phone-total">1219</span> </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item">
+                                <img src="../static/images/book1.jpg" alt="Book">
+                                <h5>Book Title</h5>
+                            </div>
+
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button id="case-minus" class="btn"><i class="fas fa-minus"></i></button>
+                                    <input id="case-number" type="number" min="0" class="form-control text-center" value="1">
+                                    <button id="case-plus" class="btn"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <h5>$ <span id="case-total">59</span> </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <h5>Subtotal:</h5>
+                                <h5>Tax:</h5>
+                                <h5>Total:</h5>
+                            </div>
+                            <div class="col-6 status">
+                                <h5>$<span id="sub-total">1,278</span></h5>
+                                <h5>$<span id="tax-amount">0</span></h5>
+                                <h5>$<span id="total-price">1,278</span></h5>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 pt-4 pb-4">
+                           <a href="index.html#books" class="btn btn-success check-out">Continue Shopping</a>
+                       </div>
+                       
+                        <div class="col-md-12 pt-4 pb-4">
+                           <button type="button" class="btn btn-success check-out">Check Out</button>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/cart.js"></script>
+</body>
+</html>
