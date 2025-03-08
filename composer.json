@@ -1,5 +1,6 @@
 {
     "require": {
-        "mikecao/flight": "^3.14"
+        "mikecao/flight": "^3.14",
+        "zircote/swagger-php": "3.3.7"
     }
 }

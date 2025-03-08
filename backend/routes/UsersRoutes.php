@@ -1,39 +1,158 @@
 <?php
 
 require '../vendor/autoload.php';
-require_once './dao/Database.php';
-require './dao/UsersDAO.php';
+require_once './services/UsersService.php';
 
+$usersService = new UsersService();
 
-Flight::route('GET /users', function(){
-    Flight::json(UsersDAO::getAll()); // Fixed method name
+/**
+ * @OA\Get(
+ *     path="/users",
+ *     summary="Get all users",
+ *     tags={"Users"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of all users",
+ *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/User"))
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Error fetching users"
+ *     )
+ * )
+ */
+Flight::route('GET /users', function() use ($usersService) {
+    Flight::json($usersService->getAllUsers());
 });
 
-
-Flight::route('GET /users/@id', function($id){
-    Flight::json(UsersDAO::getById($id));
+/**
+ * @OA\Get(
+ *     path="/users/{id}",
+ *     summary="Get a user by ID",
+ *     tags={"Users"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="User ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="User details",
+ *         @OA\JsonContent(ref="#/components/schemas/User")
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="User not found"
+ *     )
+ * )
+ */
+Flight::route('GET /users/@id', function($id) use ($usersService) {
+    Flight::json($usersService->getUserById($id));
 });
 
-
-Flight::route('POST /users', function() {
+/**
+ * @OA\Post(
+ *     path="/users",
+ *     summary="Create a new user",
+ *     tags={"Users"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"name", "email", "password"},
+ *             @OA\Property(property="name", type="string"),
+ *             @OA\Property(property="email", type="string"),
+ *             @OA\Property(property="password", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="User created successfully"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid input"
+ *     )
+ * )
+ */
+Flight::route('POST /users', function() use ($usersService) {
     $data = Flight::request()->data->getData();
-    $role = isset($data['role']) ? $data['role'] : 'customer'; // Default role
-    UsersDAO::create($data['name'], $data['email'], $data['password'], $role);
-    Flight::json(["message" => "User created successfully"]);
+    try {
+        Flight::json($usersService->createUser($data));
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
+    }
 });
 
-
-Flight::route('PUT /users/@id', function($id) {
+/**
+ * @OA\Put(
+ *     path="/users/{id}",
+ *     summary="Update an existing user",
+ *     tags={"Users"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="User ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"name", "email", "password"},
+ *             @OA\Property(property="name", type="string"),
+ *             @OA\Property(property="email", type="string"),
+ *             @OA\Property(property="password", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="User updated successfully"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid input"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="User not found"
+ *     )
+ * )
+ */
+Flight::route('PUT /users/@id', function($id) use ($usersService) {
     $data = Flight::request()->data->getData();
-    UsersDAO::update($id, $data['name'], $data['email'], $data['role']);
-    Flight::json(["message" => "User updated successfully"]);
+    try {
+        Flight::json($usersService->updateUser($id, $data));
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
+    }
 });
 
-
-Flight::route('DELETE /users/@id', function($id) {
-    UsersDAO::delete($id);
-    Flight::json(["message" => "User deleted successfully"]);
+/**
+ * @OA\Delete(
+ *     path="/users/{id}",
+ *     summary="Delete a user by ID",
+ *     tags={"Users"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="User ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="User deleted successfully"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="User not found"
+ *     )
+ * )
+ */
+Flight::route('DELETE /users/@id', function($id) use ($usersService) {
+    Flight::json($usersService->deleteUser($id));
 });
-
 
 Flight::start();

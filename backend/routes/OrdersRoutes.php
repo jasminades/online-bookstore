@@ -2,57 +2,199 @@
 
 require '../vendor/autoload.php';
 require_once './dao/Database.php';
-require_once './dao/OrdersDAO.php';
+require_once './services/OrdersService.php';
 
+$ordersService = new OrdersService();
 
-Flight::route('GET /orders/user/@user_id', function($user_id){
-    Flight::json(OrdersDAO::getAllByUser($user_id));
-});
-
-
-Flight::route('GET /orders/@id', function($id){
-    Flight::json(OrdersDAO::getById($id));
-});
-
-
-Flight::route('POST /orders', function(){
-    $data = Flight::request()->data->getData();
-
-    if (!isset($data['user_id'], $data['total_price']) || empty($data['user_id']) || empty($data['total_price'])) {
-        Flight::json(["error" => "User ID and Total Price are required"], 400);
-        return;
+/**
+ * @OA\Get(
+ *     path="/orders",
+ *     summary="Get all orders",
+ *     tags={"Orders"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of orders",
+ *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Order"))
+ *     )
+ * )
+ */
+Flight::route('GET /orders', function() use ($ordersService) {
+    try {
+        $orders = $ordersService->getAllOrders(); // Fetch all orders
+        Flight::json($orders);
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
     }
-
-    $order_id = OrdersDAO::create($data['user_id'], $data['total_price'], $data['status'] ?? 'pending');
-    Flight::json(["message" => "Order created successfully", "order_id" => $order_id]);
 });
 
-
-Flight::route('PUT /orders/@id', function($id){
-    $data = Flight::request()->data->getData();
-
-    if (!isset($data['total_price'], $data['status']) || empty($data['total_price']) || empty($data['status'])) {
-        Flight::json(["error" => "Total Price and Status are required"], 400);
-        return;
+/**
+ * @OA\Get(
+ *     path="/orders/user/{user_id}",
+ *     summary="Get orders by user ID",
+ *     tags={"Orders"},
+ *     @OA\Parameter(
+ *         name="user_id",
+ *         in="path",
+ *         description="User ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of orders for a user",
+ *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Order"))
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid user ID"
+ *     )
+ * )
+ */
+Flight::route('GET /orders/user/@user_id', function($user_id) use ($ordersService) {
+    try {
+        $orders = $ordersService->getOrdersByUser($user_id);
+        Flight::json($orders);
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
     }
+});
 
-    $updated = OrdersDAO::update($id, $data['total_price'], $data['status']);
+/**
+ * @OA\Get(
+ *     path="/orders/{id}",
+ *     summary="Get order by ID",
+ *     tags={"Orders"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="Order ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Order details",
+ *         @OA\JsonContent(ref="#/components/schemas/Order")
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Order not found"
+ *     )
+ * )
+ */
+Flight::route('GET /orders/@id', function($id) use ($ordersService) {
+    try {
+        $order = $ordersService->getOrderById($id);
+        Flight::json($order);
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
+    }
+});
 
-    if ($updated) {
+/**
+ * @OA\Post(
+ *     path="/orders",
+ *     summary="Create a new order",
+ *     tags={"Orders"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"user_id", "total_amount"},
+ *             @OA\Property(property="user_id", type="integer"),
+ *             @OA\Property(property="total_amount", type="number", format="float")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Order created successfully"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid input"
+ *     )
+ * )
+ */
+Flight::route('POST /orders', function() use ($ordersService) {
+    try {
+        $data = Flight::request()->data->getData();
+        $order_id = $ordersService->createOrder($data);
+        Flight::json(["message" => "Order created successfully", "order_id" => $order_id]);
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
+    }
+});
+
+/**
+ * @OA\Put(
+ *     path="/orders/{id}",
+ *     summary="Update an order",
+ *     tags={"Orders"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="Order ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"total_amount"},
+ *             @OA\Property(property="total_amount", type="number", format="float")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Order updated successfully"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid input"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Order not found"
+ *     )
+ * )
+ */
+Flight::route('PUT /orders/@id', function($id) use ($ordersService) {
+    try {
+        $data = Flight::request()->data->getData();
+        $ordersService->updateOrder($id, $data);
         Flight::json(["message" => "Order updated successfully"]);
-    } else {
-        Flight::json(["error" => "Order not found"], 404);
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
     }
 });
 
-
-Flight::route('DELETE /orders/@id', function($id){
-    $deleted = OrdersDAO::delete($id);
-
-    if ($deleted) {
+/**
+ * @OA\Delete(
+ *     path="/orders/{id}",
+ *     summary="Delete an order",
+ *     tags={"Orders"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         description="Order ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Order deleted successfully"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Order not found"
+ *     )
+ * )
+ */
+Flight::route('DELETE /orders/@id', function($id) use ($ordersService) {
+    try {
+        $ordersService->deleteOrder($id);
         Flight::json(["message" => "Order deleted successfully"]);
-    } else {
-        Flight::json(["error" => "Order not found"], 404);
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
     }
 });
 

@@ -1044,3 +1044,104 @@ footer .list-inline-item a:hover {
 .single-book-btn:hover {
     opacity: 0.8;
 }
+
+
+
+/* admin dashboard */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    background-color: #ece6df;
+    color: #333;
+}
+
+.admin-sidebar {
+    background-color: #203e5c;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+}
+
+.admin-heading {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-sidebar a {
+    color: white;
+    display: block;
+    margin: 15px 0;
+    text-decoration: none;
+}
+
+.admin-sidebar a:hover {
+    background-color: #555;
+    padding-left: 10px;
+}
+
+.admin-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.admin-masthead {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.admin-main-heading {
+    font-size: 50px;
+    color: #896f50;
+}
+
+.admin-subheading {
+    font-size: 20px;
+    font-weight: 300;
+    color: #534028;
+}
+
+.admin-book-list {
+    width: 100%;
+    border: 2px solid #0e0606 !important; /* Force border around the entire table */
+    border-collapse: collapse !important; /* Ensure borders are combined without spaces */
+}
+
+.admin-book-list th, .admin-book-list td {
+    padding: 10px;
+    border: 1px solid #0e0606 !important; /* Force border on each cell */
+}
+
+.admin-book-list th {
+    background-color: #203e5c;
+    color: white;
+}
+
+.admin-users-list {
+    width: 100%;
+    border: 2px solid #0e0606 !important; /* Force border around the entire table */
+    border-collapse: collapse !important; /* Ensure borders are combined without spaces */
+}
+
+.admin-users-list th, .admin-users-list td {
+    padding: 10px;
+    border: 1px solid #0e0606 !important; /* Force border on each cell */
+}
+
+.admin-users-list th {
+    background-color: #203e5c;
+    color: white;
+}

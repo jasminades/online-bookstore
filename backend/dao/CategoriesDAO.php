@@ -6,6 +6,7 @@ class CategoriesDAO{
             $conn = Database::getConnection();
             $stmt = $conn->prepare("INSERT INTO Categories (name) VALUES (?)");
             $stmt->execute([$name]);
+            return $conn->lastInsertId();
         }catch (PDOException $e){
             echo "Error: " . $e->getMessage();
         }

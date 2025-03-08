@@ -7,7 +7,8 @@ const routes = {
     "login": "/frontend/views/login.html",
     "profile": "/frontend/views/profile.html",
     "register": "/frontend/views/register.html",
-    "book": "/frontend/views/book.html"
+    "book": "/frontend/views/book.html",
+    "admin-dashboard" : "/frontend/views/admin-dashboard.html"
 };
 
 function loadPage(page) {

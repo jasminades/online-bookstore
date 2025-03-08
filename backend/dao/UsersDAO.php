@@ -4,9 +4,13 @@ class UsersDAO {
     public static function create($name, $email, $password, $role = 'customer') {
         try {
             $conn = Database::getConnection();
-            $stmt = $conn->prepare("INSERT INTO Users (name, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())");
+            
+            $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())");
+            
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            
             $stmt->execute([$name, $email, $hashedPassword, $role]);
+            
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
                 echo "Error: Email already exists.";
