@@ -1,10 +1,13 @@
 <?php
 
-require '../vendor/autoload.php';
-require_once './dao/Database.php';
 require_once './services/ReviewsService.php';
 
 $reviewsService = new ReviewsService();
+
+Flight::route('GET /reviews', function() {
+    echo "Reviews route is working!";
+});
+
 
 /**
  * @OA\Get(

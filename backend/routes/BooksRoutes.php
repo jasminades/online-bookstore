@@ -1,11 +1,10 @@
 <?php
-
-require '../vendor/autoload.php';
-require_once './dao/Database.php';
+echo "to be loaded!";
 require_once './services/BooksService.php';
-// require_once './dao/BooksDAO.php';
-
+echo "to be loaded!";
 $bookService = new BooksService();
+
+echo "service loaded!";
 
 /**
  * @OA\Get(
@@ -20,9 +19,10 @@ $bookService = new BooksService();
  * )
  */
 Flight::route('GET /books', function() use ($bookService){
-    $books = $bookService->getAllBooks();
-    Flight::json($books);
+    Flight::json($bookService->getAllBooks());
 });
+
+
 
 /**
  * @OA\Get(
