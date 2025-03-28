@@ -16,11 +16,13 @@ CREATE TABLE `books` (
 );
 
 CREATE TABLE `orders` (
-  `order_id` int PRIMARY KEY,
-  `user_id` int,
-  `order_date` date,
-  `total_amount` decimal
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT,
+  `total_price` DECIMAL(10, 2),
+  `status` VARCHAR(50),
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 CREATE TABLE `categories` (
   `category_id` int PRIMARY KEY,
