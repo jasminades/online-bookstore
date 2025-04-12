@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../../../../vendor/autoload.php';
 
-define('BASE_URL', 'http://localhost:8888/book-store/backend/');
+define('BASE_URL', 'http://localhost:8000/backend');
 error_reporting(0);
 
 $openapi = \OpenApi\Generator::scan(['../../../routes', './']);

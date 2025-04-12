@@ -1,7 +1,6 @@
 <?php
 
 require '../vendor/autoload.php';
-require_once './dao/Database.php';
 require_once './services/OrdersService.php';
 
 $ordersService = new OrdersService();

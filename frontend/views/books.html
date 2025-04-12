@@ -117,43 +117,7 @@
         </section>
 
     
-        <!-- Books List Table (Dynamic Content) -->
-        <h1>Books List</h1>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                </tr>
-            </thead>
-            <tbody id="book-list">
-                <!-- Books will be dynamically inserted here -->
-            </tbody>
-        </table>
-
-        <script>
-            // Fetch books data from the backend API
-            fetch('http://localhost/books')
-                .then(response => response.json())
-                .then(data => {
-                    const bookList = document.getElementById('book-list');
-                    data.forEach(book => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${book.id}</td>
-                            <td>${book.title}</td>
-                            <td>${book.author}</td>
-                            <td>${book.price}</td>
-                            <td>${book.category_id}</td>
-                        `;
-                        bookList.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('Error fetching books:', error));
-        </script> 
+    
     </main>
 
 

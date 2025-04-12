@@ -1,5 +1,6 @@
 <?php
 
+require '../vendor/autoload.php';
 require_once './services/ReviewsService.php';
 
 $reviewsService = new ReviewsService();

@@ -30,7 +30,7 @@
         <div class="admin-sidebar">
             <h3 class="admin-heading">Admin Dashboard</h3>
             <a href="admin-dashboard-books.html">Manage Books</a>
-            <a href="#">Manage Orders</a>
+            <a href="admin-dashboard-orders.html">Manage Orders</a>
             <a href="admin-dashboard-users.html">Users</a>
             <a href="#">Settings</a>
             <a href="#">Logout</a>
@@ -40,21 +40,20 @@
             <header class="admin-masthead">
                 <div>
                     <h1 class="admin-main-heading">Welcome to the Admin Dashboard</h1>
-                    <span class="admin-subheading">Manage Users</span>
+                    <span class="admin-subheading">Manage Orders</span>
                 </div>
             </header>
     
             <section id="admin-books">
-                <h1 class="admin-books-list-heading">Users List</h1>
+                <h1 class="admin-books-list-heading">Orders List</h1>
                 <table class="admin-book-list table table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Full Nanme</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>User ID</th>
+                            <th>Total Price</th>
+                            <th>Status</th>
                             <th>Created at</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="users-list">
@@ -79,54 +78,36 @@
     
     
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('http://localhost:8000/backend/views/users.php')
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Fetched users data:", data); 
-    
-                    const usersList = document.getElementById('users-list'); 
-                    
-                    if (!usersList) {
-                        console.error('users-list element not found!');
-                        return;
-                    }
-    
-                    data.forEach(user => {
-                        console.log("Inserting user:", user); 
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${user.id}</td>
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.role}</td>
-                            <td>${user.created_at}</td>
-                            <td>
-                                <a href="edit-user.html?id=${user.id}" class="btn btn-primary btn-sm">Edit</a>
-                                <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button>
-                            </td>
-                        `;
-                        usersList.appendChild(row); 
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching users:', error); 
-                });
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+    fetch('http://localhost:8000/backend/views/orders.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Fetched orders data:", data); 
 
-        function deleteUser(userId) {
-            fetch(`http://localhost:8000/backend/views/users.php?id=${userId}`, {
-                method: 'DELETE',
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('User deleted successfully');
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Error deleting user:', error);
+            const ordersList = document.getElementById('users-list'); 
+            if (!ordersList) {
+                console.error('users-list element not found!');
+                return;
+            }
+
+            data.forEach(order => {
+                console.log("Inserting order:", order); 
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.user_id}</td>
+                    <td>${order.total_price}</td>
+                    <td>${order.status}</td>
+                    <td>${order.created_at}</td>
+                `;
+                ordersList.appendChild(row); 
             });
-        }
+        })
+        .catch(error => {
+            console.error('Error fetching orders:', error); 
+        });
+    });
+
     </script>
     
 

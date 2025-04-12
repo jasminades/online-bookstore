@@ -1,9 +1,7 @@
 <?php
 
 require '../vendor/autoload.php';
-require_once './dao/Database.php';
 require_once './services/CategoriesService.php';
-require_once './dao/CategoriesDAO.php';
 
 $categoriesService = new CategoriesService();
 

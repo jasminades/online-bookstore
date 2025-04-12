@@ -15,13 +15,13 @@
     <!-- navigation-->
     <nav id="mainNav">
         <div class="container">
-            <a href="home.html" class="navbar-brand" data-link>Book & Beyond</a>
+            <a href="index.html" class="navbar-brand" data-link>Book & Beyond</a>
             <div class="navbar-menu">
-                <a href="#home" class="nav-link" data-link data-page="home">Home</a>
-                <a href="#about" class="nav-link" data-link data-page="about">About</a>
-                <a href="#books" class="nav-link" data-link data-page="books">Books</a>
-                <a href="#profile" class="nav-link" data-link data-page="profile">Profile</a>
-                <a href="#register" class="nav-link" data-link data-page="register">Register</a>
+                <a href="index.html#home" class="nav-link" data-link data-page="home">Home</a>
+                <a href="index.html#about" class="nav-link" data-link data-page="about">About</a>
+                <a href="index.html#books" class="nav-link" data-link data-page="books">Books</a>
+                <a href="index.html#profile" class="nav-link" data-link data-page="profile">Profile</a>
+                <a href="index.html#register" class="nav-link" data-link data-page="register">Register</a>
             </div>
         </div>
     </nav>
@@ -30,7 +30,7 @@
         <div class="admin-sidebar">
             <h3 class="admin-heading">Admin Dashboard</h3>
             <a href="admin-dashboard-books.html">Manage Books</a>
-            <a href="#">Manage Orders</a>
+            <a href="admin-dashboard-orders.html">Manage Orders</a>
             <a href="admin-dashboard-users.html">Users</a>
             <a href="#">Settings</a>
             <a href="#">Logout</a>
@@ -54,10 +54,10 @@
                             <th>Author</th>
                             <th>Price</th>
                             <th>Category</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="book-list">
-                        <!-- Books will be dynamically inserted here -->
                     </tbody>
                 </table>
             </section>
@@ -79,35 +79,107 @@
     
     
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('http://localhost:8000/views/books.php')
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Fetched books data:", data); // Log the fetched data
-    
-                    const bookList = document.getElementById('book-list');
-                    if (!bookList) {
-                        console.error('book-list element not found!');
-                        return;
-                    }
-    
-                    data.forEach(book => {
-                        console.log("Inserting book:", book); 
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${book.id}</td>
-                            <td>${book.title}</td>
-                            <td>${book.author}</td>
-                            <td>${book.price}</td>
-                            <td>${book.category_id}</td>
-                        `;
-                        bookList.appendChild(row);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching books:', error); 
+        document.addEventListener("DOMContentLoaded", function () {
+    fetch('http://localhost:8000/backend/views/books.php')
+        .then(response => response.json())
+        .then(data => {
+            const bookList = document.getElementById('book-list');
+            if (!bookList) {
+                console.error('book-list element not found!');
+                return;
+            }
+
+            bookList.innerHTML = ""; // Clear the table before inserting new data
+
+            data.forEach(book => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.price}</td>
+                    <td>${book.category_id}</td>
+                    <td>
+                        <button class="edit-btn btn btn-warning btn-sm" data-id="${book.id}">Edit</button>
+                        <button class="delete-btn btn btn-danger btn-sm" data-id="${book.id}">Delete</button>
+                    </td>
+                `;
+
+                bookList.appendChild(row);
+            });
+
+            // Add event listeners for delete and edit buttons
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const bookId = this.getAttribute("data-id");
+                    deleteBook(bookId);
                 });
+            });
+
+            document.querySelectorAll(".edit-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const bookId = this.getAttribute("data-id");
+                    editBook(bookId);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
         });
+});
+
+// Function to delete a book
+function deleteBook(bookId) {
+    if (confirm("Are you sure you want to delete this book?")) {
+        fetch(`http://localhost:8000/backend/books/${bookId}`, {
+            method: "DELETE",
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.message) {
+                alert(result.message);
+                location.reload(); // Refresh the page
+            } else {
+                alert("Error deleting book: " + result.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+}
+
+// Function to edit a book (Prompt user for new values)
+function editBook(bookId) {
+    const newTitle = prompt("Enter new title:");
+    const newAuthor = prompt("Enter new author:");
+    const newPrice = prompt("Enter new price:");
+    const newCategoryId = prompt("Enter new category ID:");
+
+    if (newTitle && newAuthor && newPrice && newCategoryId) {
+        fetch(`http://localhost:8000/backend/books/${bookId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title: newTitle,
+                author: newAuthor,
+                price: parseFloat(newPrice),
+                category_id: parseInt(newCategoryId),
+            }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.message) {
+                alert(result.message);
+                location.reload(); 
+            } else {
+                alert("Error updating book: " + result.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+}
+
     </script>
 
     <script src="../js/app.js"></script>

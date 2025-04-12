@@ -17,7 +17,8 @@ class UsersService {
         $this->validateUserData($data);
 
         $role = isset($data['role']) ? $data['role'] : 'customer';
-        UsersDAO::create($data['name'], $data['email'], $data['password'], $role);
+        $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
+        UsersDAO::create($data['name'], $data['email'], $hashedPassword, $role);
         return ["message" => "User created successfully"];
     }
 

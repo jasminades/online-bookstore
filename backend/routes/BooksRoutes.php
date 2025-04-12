@@ -1,10 +1,11 @@
 <?php
-echo "to be loaded!";
+
+require '../vendor/autoload.php';
 require_once './services/BooksService.php';
-echo "to be loaded!";
+
 $bookService = new BooksService();
 
-echo "service loaded!";
+echo "checking if loaded!";
 
 /**
  * @OA\Get(
