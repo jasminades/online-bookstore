@@ -1,0 +1,291 @@
+openapi: '3.0.0'
+info:
+  title: Bookstore API
+  description: 'API for managing users, books, reviews, orders, and categories in the bookstore'
+  contact:
+    name: 'Jasmina'
+    email: jasmina@example.com
+  version: '1.0.0'
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: 'Register a new user'
+      requestBody:
+        description: 'User registration data'
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  description: 'User name'
+                  type: string
+                  example: 'John Doe'
+                email:
+                  description: 'User email address'
+                  type: string
+                  example: 'john.doe@example.com'
+                password:
+                  description: 'User password'
+                  type: string
+                  example: 'password123'
+              type: object
+      responses:
+        '201':
+          description: 'User created successfully'
+        '400':
+          description: 'Bad request, validation error'
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: 'Login to the system with email and password'
+      requestBody:
+        description: 'User login credentials'
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  description: 'User email address'
+                  type: string
+                  example: 'john.doe@example.com'
+                password:
+                  description: 'User password'
+                  type: string
+                  example: 'password123'
+              type: object
+      responses:
+        '200':
+          description: 'Login successful, returns JWT token'
+        '401':
+          description: 'Unauthorized, invalid credentials'
+
+  /books:
+    get:
+      tags:
+        - books
+      summary: 'Get all books'
+      responses:
+        '200':
+          description: 'Array of all books in the database'
+    post:
+      tags:
+        - books
+      summary: 'Add a new book'
+      requestBody:
+        description: 'Book data payload'
+        content:
+          application/json:
+            schema:
+              required:
+                - title
+                - author
+                - category
+                - price
+              properties:
+                title:
+                  description: 'Book title'
+                  type: string
+                  example: 'The Great Gatsby'
+                author:
+                  description: 'Book author'
+                  type: string
+                  example: 'F. Scott Fitzgerald'
+                category:
+                  description: 'Category of the book'
+                  type: string
+                  example: 'Literature'
+                price:
+                  description: 'Price of the book'
+                  type: number
+                  format: float
+                  example: 10.99
+                description:
+                  description: 'Book description'
+                  type: string
+                  example: 'A story about the American dream.'
+                image:
+                  description: 'URL of the book cover image'
+                  type: string
+                  example: 'https://example.com/gatsby.jpg'
+              type: object
+      responses:
+        '201':
+          description: 'Book added successfully'
+        '400':
+          description: 'Bad request, validation error'
+
+  /books/{book_id}:
+    get:
+      tags:
+        - books
+      summary: 'Get a book by its ID'
+      parameters:
+        - name: book_id
+          in: path
+          description: 'ID of the book'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Book details'
+        '404':
+          description: 'Book not found'
+
+  /reviews:
+    post:
+      tags:
+        - reviews
+      summary: 'Add a review for a book'
+      requestBody:
+        description: 'Review data payload'
+        content:
+          application/json:
+            schema:
+              required:
+                - book_id
+                - user_id
+                - rating
+                - comment
+              properties:
+                book_id:
+                  description: 'ID of the book being reviewed'
+                  type: integer
+                  example: 1
+                user_id:
+                  description: 'ID of the user who wrote the review'
+                  type: integer
+                  example: 1
+                rating:
+                  description: 'Rating given to the book (1-5)'
+                  type: integer
+                  example: 5
+                comment:
+                  description: 'Review comment'
+                  type: string
+                  example: 'An amazing read!'
+              type: object
+      responses:
+        '201':
+          description: 'Review added successfully'
+        '400':
+          description: 'Bad request, validation error'
+
+  /reviews/{review_id}:
+    delete:
+      tags:
+        - reviews
+      summary: 'Delete a review by its ID'
+      parameters:
+        - name: review_id
+          in: path
+          description: 'ID of the review'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Review deleted successfully'
+        '404':
+          description: 'Review not found'
+
+  /orders:
+    post:
+      tags:
+        - orders
+      summary: 'Create a new order'
+      requestBody:
+        description: 'Order data payload'
+        content:
+          application/json:
+            schema:
+              required:
+                - user_id
+                - book_ids
+              properties:
+                user_id:
+                  description: 'ID of the user placing the order'
+                  type: integer
+                  example: 1
+                book_ids:
+                  description: 'Array of book IDs in the order'
+                  type: array
+                  items:
+                    type: integer
+                    example: 1
+              type: object
+      responses:
+        '201':
+          description: 'Order created successfully'
+        '400':
+          description: 'Bad request, validation error'
+
+  /orders/{order_id}:
+    get:
+      tags:
+        - orders
+      summary: 'Get order details by its ID'
+      parameters:
+        - name: order_id
+          in: path
+          description: 'ID of the order'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Order details'
+        '404':
+          description: 'Order not found'
+
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: 'Get all categories'
+      responses:
+        '200':
+          description: 'Array of all categories in the database'
+
+  /categories/{category_id}:
+    get:
+      tags:
+        - categories
+      summary: 'Get category details by its ID'
+      parameters:
+        - name: category_id
+          in: path
+          description: 'ID of the category'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Category details'
+        '404':
+          description: 'Category not found'
+
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: Authentication
+      in: header
+
+security:
+  - ApiKey: []

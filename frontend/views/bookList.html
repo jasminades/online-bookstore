@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+</head>
+<body>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('')">
+        <div class="container">
+            <div class="site-heading">
+                <h1>Welcome to Book & Beyond</h1>
+                <span class="subheading">Find your next great read!</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- View Cart Button -->
+    <div class="view-cart-container">
+        <a href="cart.html" class="btn view-cart">View Cart 🛒</a>
+    </div>
+
+    <!-- Books Section -->
+    <section id="books">
+        <main class="books-container">
+            
+            <!-- Sidebar for genres  -->
+            <aside class="genre-filter">
+                <h2>Filter by Genre</h2>
+                <ul>
+                    <li><input type="checkbox" name="genre" value="fiction"> Fiction</li>
+                    <li><input type="checkbox" name="genre" value="non-fiction"> Non-Fiction</li>
+                    <li><input type="checkbox" name="genre" value="mystery"> Mystery</li>
+                    <li><input type="checkbox" name="genre" value="fantasy"> Fantasy</li>
+                    <li><input type="checkbox" name="genre" value="science-fiction"> Science Fiction</li>
+                    <li><input type="checkbox" name="genre" value="romance"> Romance</li>
+                    <li><input type="checkbox" name="genre" value="history"> History</li>
+                </ul>
+            </aside>
+
+            <!-- Books Grid Section -->
+            <section class="books-grid">
+                <div class="books-card">
+                    <img src="../static/images/book1.jpg" alt="Book Cover">
+                    <h3 class="book-title">Book Title</h3>
+                    <p class="book-author">by Author Name</p>
+                    <p class="book-price">$19.99</p>
+                    <button class="btn add-to-cart">Add to Cart</button>
+                    <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
+                </div>
+
+                <!-- Add more book cards as needed... -->
+                <div class="books-card">
+                    <img src="../static/images/book2.jpg" alt="Book Cover">
+                    <h3 class="book-title">Book Title</h3>
+                    <p class="book-author">by Author Name</p>
+                    <p class="book-price">$19.99</p>
+                    <button class="btn add-to-cart">Add to Cart</button>
+                    <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
+                </div>
+
+                <div class="books-card">
+                    <img src="../static/images/book1.jpg" alt="Book Cover">
+                    <h3 class="book-title">Book Title</h3>
+                    <p class="book-author">by Author Name</p>
+                    <p class="book-price">$19.99</p>
+                    <button class="btn add-to-cart">Add to Cart</button>
+                    <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
+                </div>
+
+                <div class="books-card">
+                    <img src="../static/images/book1.jpg" alt="Book Cover">
+                    <h3 class="book-title">Book Title</h3>
+                    <p class="book-author">by Author Name</p>
+                    <p class="book-price">$19.99</p>
+                    <button class="btn add-to-cart">Add to Cart</button>
+                    <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
+                </div>
+
+                <div class="books-card">
+                    <img src="../static/images/book2.jpg" alt="Book Cover">
+                    <h3 class="book-title">Book Title</h3>
+                    <p class="book-author">by Author Name</p>
+                    <p class="book-price">$19.99</p>
+                    <button class="btn add-to-cart">Add to Cart</button>
+                    <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
+                </div>
+
+                <!-- Repeat for additional books... -->
+            </section>
+
+            <!-- Books List Table (Dynamic Content) -->
+            <h1>Books List</h1>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="book-list">
+                    <!-- Books will be dynamically inserted here -->
+                </tbody>
+            </table>
+
+            <script>
+                // Fetch books data from the backend API
+                fetch('http://localhost/books')
+                    .then(response => response.json())
+                    .then(data => {
+                        const bookList = document.getElementById('book-list');
+                        data.forEach(book => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${book.id}</td>
+                                <td>${book.title}</td>
+                                <td>${book.author}</td>
+                                <td>${book.price}</td>
+                                <td>${book.category_id}</td>
+                            `;
+                            bookList.appendChild(row);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching books:', error));
+            </script>
+
+        </main>
+    </section>
+
+</body>
+</html>
