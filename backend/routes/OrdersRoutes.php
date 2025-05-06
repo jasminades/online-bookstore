@@ -1,6 +1,5 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/OrdersService.php';
 
 $ordersService = new OrdersService();
@@ -197,4 +196,3 @@ Flight::route('DELETE /orders/@id', function($id) use ($ordersService) {
     }
 });
 
-Flight::start();

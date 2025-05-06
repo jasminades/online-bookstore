@@ -1,6 +1,5 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/UsersService.php';
 
 $usersService = new UsersService();
@@ -155,4 +154,3 @@ Flight::route('DELETE /users/@id', function($id) use ($usersService) {
     Flight::json($usersService->deleteUser($id));
 });
 
-Flight::start();

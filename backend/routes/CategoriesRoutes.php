@@ -1,6 +1,5 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/CategoriesService.php';
 
 $categoriesService = new CategoriesService();
@@ -163,5 +162,3 @@ Flight::route('DELETE /categories/@id', function($id) use ($categoriesService) {
         Flight::json(['error' => $e->getMessage()], 400);
     }
 });
-
-Flight::start();

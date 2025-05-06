@@ -1,11 +1,8 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/BooksService.php';
 
 $bookService = new BooksService();
-
-echo "checking if loaded!";
 
 /**
  * @OA\Get(
