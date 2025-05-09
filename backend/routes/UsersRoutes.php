@@ -21,7 +21,7 @@ $usersService = new UsersService();
  * )
  */
 Flight::route('GET /users', function() use ($usersService) {
-    Flight::json($usersService->getAllUsers());
+    Flight::json($usersService->get_all());
 });
 
 /**
@@ -48,7 +48,7 @@ Flight::route('GET /users', function() use ($usersService) {
  * )
  */
 Flight::route('GET /users/@id', function($id) use ($usersService) {
-    Flight::json($usersService->getUserById($id));
+    Flight::json($usersService->get_by_id($id));
 });
 
 /**
@@ -100,7 +100,6 @@ Flight::route('POST /users', function() use ($usersService) {
  *         required=true,
  *         @OA\JsonContent(
  *             required={"name", "email", "password"},
- *             @OA\Property(property="name", type="string"),
  *             @OA\Property(property="email", type="string"),
  *             @OA\Property(property="password", type="string")
  *         )

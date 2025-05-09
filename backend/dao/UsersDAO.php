@@ -9,7 +9,7 @@ class UsersDao extends BaseDao
         parent::__construct("users");
     }
 
-    public function create($name, $email, $password, $role = 'customer')
+    public function add($name, $email, $password, $role = 'customer')
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         try {
@@ -26,13 +26,12 @@ class UsersDao extends BaseDao
         }
     }
 
-    public static function getAll() {
-        $db = Database::getConnection(); 
-        $stmt = $db->query("SELECT * FROM users");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function get_all() {
+        return $this->query("SELECT * FROM users", []);
     }
+    
 
-    public function getById($id)
+    public function get_by_id($id)
     {
         return $this->query_unique("SELECT * FROM users WHERE id = :id", ['id' => $id]);
     }

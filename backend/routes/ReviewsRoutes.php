@@ -65,7 +65,7 @@ Flight::route('GET /reviews/@book_id', function($book_id) use ($reviewsService) 
  */
 Flight::route('GET /reviews/@id', function($id) use ($reviewsService) {
     try {
-        Flight::json($reviewsService->getById($id));
+        Flight::json($reviewsService->get_by_id($id));
     } catch (Exception $e) {
         Flight::json(["error" => $e->getMessage()], 400);
     }

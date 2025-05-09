@@ -1,29 +1,21 @@
 <?php
 
 require_once './dao/BooksDAO.php';
+require_once './services/BaseService.php';
 
-class BooksService{
-    private $booksDAO;
-
-    public function __construct(){
-        $this->booksDAO = new BooksDAO();
+class BooksService extends BaseService {
+    public function __construct() {
+        parent::__construct(new BooksDAO()); 
     }
 
-    public function getAllBooks(){
-        return $this->booksDAO->getAll();
-    }
-
-    public function getBookById($id){
-        $book = $this->booksDAO->getById($id);
-
-        if(!$book){
+    public function getBookById($id) {
+        $book = $this->dao->getById($id);
+        if (!$book) {
             throw new Exception("Book not found");
         }
         return $book;
     }
 
-
-    // validation
     private function validateBookData($data, $isUpdate = false) {
         $errors = [];
 
@@ -44,7 +36,7 @@ class BooksService{
         }
 
         if ($isUpdate || isset($data['id'])) {
-            $book = $this->booksDAO->getById($data['id']);
+            $book = $this->dao->getById($data['id']);
             if (!$book) {
                 $errors[] = "Book not found for update or delete";
             }
@@ -55,21 +47,18 @@ class BooksService{
         }
     }
 
-
-    public function createBook($data){  
+    public function createBook($data) {
         $this->validateBookData($data);
-
-        return $this->booksDAO->create($data['title'], $data['author'], $data['price'], $data['category_id']);
+        return $this->dao->create($data['title'], $data['author'], $data['price'], $data['category_id']);
     }
 
     public function updateBook($id, $data) {
-        $this->validateBookData($data, true);
-        return $this->booksDAO->update($id, $data['title'], $data['author'], $data['price'], $data['category_id']);
+        $this->validateBookData(array_merge($data, ['id' => $id]), true);
+        return $this->dao->update($id, $data['title'], $data['author'], $data['price'], $data['category_id']);
     }
 
     public function deleteBook($id) {
         $this->validateBookData(['id' => $id], true);
-        return $this->booksDAO->delete($id);
+        return $this->dao->delete($id);
     }
-
 }

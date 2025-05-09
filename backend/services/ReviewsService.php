@@ -6,12 +6,15 @@ require_once './dao/UsersDAO.php';
 
 class ReviewsService {
     private $reviewsDAO;
+    private $booksDAO;
+    private $usersDAO;
 
     public function __construct() {
         $this->reviewsDAO = new ReviewsDAO();
+        $this->booksDAO = new BooksDAO(); 
+        $this->usersDAO = new UsersDAO(); 
     }
 
-    
     public function getAllByBook($book_id) {
         $reviews = $this->reviewsDAO->getAllByBook($book_id);
         if (!$reviews) {
@@ -20,9 +23,8 @@ class ReviewsService {
         return $reviews;
     }
 
-    
-    public function getById($id) {
-        $review = $this->reviewsDAO->getById($id);
+    public function get_by_id($id) {
+        $review = $this->reviewsDAO->get_by_id($id);  
         if (!$review) {
             throw new Exception("Review not found.");
         }
@@ -32,11 +34,11 @@ class ReviewsService {
     private function validateReviewData($data, $isUpdate = false) {
         $errors = [];
 
-        if (!isset($data['book_id']) || !BooksDAO::getById($data['book_id'])) {
+        if (!isset($data['book_id']) || !$this->booksDAO->getById($data['book_id'])) { 
             $errors[] = "Invalid or non-existent book.";
         }
 
-        if (!isset($data['user_id']) || !UsersDAO::getById($data['user_id'])) {
+        if (!isset($data['user_id']) || !$this->usersDAO->get_by_id($data['user_id'])) { 
             $errors[] = "Invalid or non-existent user.";
         }
 
@@ -53,16 +55,14 @@ class ReviewsService {
         }
     }
 
-    
     public function createReview($data) {
         $this->validateReviewData($data);
         $review = $this->reviewsDAO->create($data['book_id'], $data['user_id'], $data['rating'], $data['comment']);
         return $review;
     }
 
-    
     public function updateReview($id, $data) {
-        if (!$this->reviewsDAO->getById($id)) {
+        if (!$this->reviewsDAO->get_by_id($id)) { 
             throw new Exception("Review not found.");
         }
 
@@ -71,9 +71,8 @@ class ReviewsService {
         return $updatedReview;
     }
 
-    
     public function deleteReview($id) {
-        if (!$this->reviewsDAO->getById($id)) {
+        if (!$this->reviewsDAO->get_by_id($id)) {  
             throw new Exception("Review not found.");
         }
 

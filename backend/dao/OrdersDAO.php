@@ -28,7 +28,7 @@ class OrdersDao extends BaseDao
         }
     }
 
-    public function getAll()
+    public function get_all()
     {
         return $this->query("SELECT * FROM orders ORDER BY created_at DESC", []);
     }
@@ -41,12 +41,12 @@ class OrdersDao extends BaseDao
         );
     }
 
-    public function getById($id)
+    public function get_by_id($id)
     {
         return $this->query_unique("SELECT * FROM orders WHERE id = :id", ['id' => $id]);
     }
 
-    public function update($id, $total_price, $status)
+    public function updateOrder($id, $total_price, $status)
     {
         return $this->execute(
             "UPDATE orders SET total_price = :total_price, status = :status WHERE id = :id",
@@ -62,7 +62,7 @@ class OrdersDao extends BaseDao
         return $this->execute($sql, $fields);
     }
 
-    public function delete($id)
+    public function deleteOrder($id)
     {
         return $this->execute("DELETE FROM orders WHERE id = :id", ['id' => $id]);
     }

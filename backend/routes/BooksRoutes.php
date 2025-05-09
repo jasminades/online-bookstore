@@ -17,7 +17,8 @@ $bookService = new BooksService();
  * )
  */
 Flight::route('GET /books', function() use ($bookService){
-    Flight::json($bookService->getAllBooks());
+    Flight::json($bookService->get_all());
+
 });
 
 

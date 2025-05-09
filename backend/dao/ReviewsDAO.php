@@ -26,7 +26,7 @@ class ReviewsDao extends BaseDao
         return $this->query("SELECT * FROM reviews WHERE book_id = :book_id", ['book_id' => $book_id]);
     }
 
-    public function getById($id)
+    public function get_by_id($id)
     {
         return $this->query_unique("SELECT * FROM reviews WHERE id = :id", ['id' => $id]);
     }

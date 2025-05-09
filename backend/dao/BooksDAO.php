@@ -45,7 +45,7 @@ class BooksDao extends BaseDao
         return $this->insert("books", $entity);
     }
 
-    public function getAll()
+    public function get_all()
     {
         return $this->query("SELECT * FROM books", []);
     }
