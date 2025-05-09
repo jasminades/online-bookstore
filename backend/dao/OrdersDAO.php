@@ -1,13 +1,24 @@
 <?php
 
-class OrdersDAO {
+require_once __DIR__ . "/BaseDao.php";
 
-    public static function create($user_id, $total_price, $status = 'pending') {
+class OrdersDao extends BaseDao
+{
+    public function __construct()
+    {
+        parent::__construct("orders");
+    }
+
+    public function create($user_id, $total_price, $status = 'pending')
+    {
         try {
-            $conn = Database::getConnection();  
-            $stmt = $conn->prepare("INSERT INTO Orders (user_id, total_price, status, created_at) VALUES (?, ?, ?, NOW())");
-            $stmt->execute([$user_id, $total_price, $status]);
-            return $conn->lastInsertId();
+            $order = [
+                'user_id' => $user_id,
+                'total_price' => $total_price,
+                'status' => $status,
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+            return $this->insert("orders", $order);
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
                 echo "Error: Duplicate entry.";
@@ -17,71 +28,42 @@ class OrdersDAO {
         }
     }
 
-    public static function getAll() {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->query("SELECT * FROM Orders ORDER BY created_at DESC");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-    }
-    
-    public static function getAllByUser($user_id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Orders WHERE user_id = ? ORDER BY created_at DESC");
-            $stmt->execute([$user_id]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function getAll()
+    {
+        return $this->query("SELECT * FROM orders ORDER BY created_at DESC", []);
     }
 
-    public static function getById($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Orders WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function getAllByUser($user_id)
+    {
+        return $this->query(
+            "SELECT * FROM orders WHERE user_id = :user_id ORDER BY created_at DESC",
+            ['user_id' => $user_id]
+        );
     }
 
-    public static function update($id, $total_price, $status) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("UPDATE Orders SET total_price = ?, status = ? WHERE id = ?");
-            $stmt->execute([$total_price, $status, $id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function getById($id)
+    {
+        return $this->query_unique("SELECT * FROM orders WHERE id = :id", ['id' => $id]);
     }
 
-    public static function updatePartial($id, $fields) {
-        try {
-            $conn = Database::getConnection();
-            $columns = array_keys($fields);
-            $values = array_values($fields);
-
-            $setClause = implode(", ", array_map(fn($col) => "$col = ?", $columns));
-            $stmt = $conn->prepare("UPDATE Orders SET $setClause WHERE id = ?");
-            $values[] = $id;
-            $stmt->execute($values);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function update($id, $total_price, $status)
+    {
+        return $this->execute(
+            "UPDATE orders SET total_price = :total_price, status = :status WHERE id = :id",
+            ['total_price' => $total_price, 'status' => $status, 'id' => $id]
+        );
     }
 
-    public static function delete($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("DELETE FROM Orders WHERE id = ?");
-            $stmt->execute([$id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function updatePartial($id, $fields)
+    {
+        $setClause = implode(", ", array_map(fn($col) => "$col = :$col", array_keys($fields)));
+        $fields['id'] = $id;
+        $sql = "UPDATE orders SET $setClause WHERE id = :id";
+        return $this->execute($sql, $fields);
+    }
+
+    public function delete($id)
+    {
+        return $this->execute("DELETE FROM orders WHERE id = :id", ['id' => $id]);
     }
 }
-?>

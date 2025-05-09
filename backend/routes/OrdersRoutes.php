@@ -18,7 +18,7 @@ $ordersService = new OrdersService();
  */
 Flight::route('GET /orders', function() use ($ordersService) {
     try {
-        $orders = $ordersService->getAllOrders(); // Fetch all orders
+        $orders = $ordersService->getAllOrders(); 
         Flight::json($orders);
     } catch (Exception $e) {
         Flight::json(["error" => $e->getMessage()], 400);

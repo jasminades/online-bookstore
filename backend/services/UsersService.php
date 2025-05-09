@@ -4,34 +4,38 @@ require_once './dao/UsersDAO.php';
 
 class UsersService {
 
+    private $usersDao;
+
+    public function __construct() {
+        $this->usersDao = new UsersDAO(); 
+    }
+
     public function getAllUsers() {
-        return UsersDAO::getAll();
+        return $this->usersDao->getAll(); 
     }
 
     public function getUserById($id) {
-        return UsersDAO::getById($id);
+        return $this->usersDao->getById($id); 
     }
 
-    
     public function createUser($data) {
         $this->validateUserData($data);
 
         $role = isset($data['role']) ? $data['role'] : 'customer';
         $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-        UsersDAO::create($data['name'], $data['email'], $hashedPassword, $role);
+        $this->usersDao->create($data['name'], $data['email'], $hashedPassword, $role); 
         return ["message" => "User created successfully"];
     }
 
     public function updateUser($id, $data) {
         $this->validateUserData($data);
         
-        UsersDAO::update($id, $data['name'], $data['email'], $data['role']);
+        $this->usersDao->update($id, $data['name'], $data['email'], $data['role']); 
         return ["message" => "User updated successfully"];
     }
 
-    
     public function deleteUser($id) {
-        UsersDAO::delete($id);
+        $this->usersDao->delete($id);
         return ["message" => "User deleted successfully"];
     }
 

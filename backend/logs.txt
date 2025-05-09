@@ -1,0 +1,48 @@
+Error: Non-static method OrdersDao::getAll() cannot be called statically in /Applications/MAMP/htdocs/online-bookstore/backend/services/OrdersService.php:14
+Stack trace:
+#0 /Applications/MAMP/htdocs/online-bookstore/backend/routes/OrdersRoutes.php(21): OrdersService->getAllOrders()
+#1 [internal function]: {closure}()
+#2 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(354): call_user_func_array(Object(Closure), Array)
+#3 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Object(Closure), Array)
+#4 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Engine.php(576): flight\core\Dispatcher->execute(Object(Closure), Array)
+#5 [internal function]: flight\Engine->_start()
+#6 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(376): call_user_func_array(Array, Array)
+#7 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Array, Array)
+#8 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(131): flight\core\Dispatcher->execute(Array, Array)
+#9 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(95): flight\core\Dispatcher->runEvent('start', Array)
+#10 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Engine.php(131): flight\core\Dispatcher->run('start', Array)
+#11 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Flight.php(126): flight\Engine->__call('start', Array)
+#12 /Applications/MAMP/htdocs/online-bookstore/backend/index.php(26): Flight::__callStatic('start', Array)
+#13 {main}
+Error: Non-static method OrdersDao::getAll() cannot be called statically in /Applications/MAMP/htdocs/online-bookstore/backend/services/OrdersService.php:14
+Stack trace:
+#0 /Applications/MAMP/htdocs/online-bookstore/backend/routes/OrdersRoutes.php(21): OrdersService->getAllOrders()
+#1 [internal function]: {closure}()
+#2 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(354): call_user_func_array(Object(Closure), Array)
+#3 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Object(Closure), Array)
+#4 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Engine.php(576): flight\core\Dispatcher->execute(Object(Closure), Array)
+#5 [internal function]: flight\Engine->_start()
+#6 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(376): call_user_func_array(Array, Array)
+#7 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Array, Array)
+#8 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(131): flight\core\Dispatcher->execute(Array, Array)
+#9 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(95): flight\core\Dispatcher->runEvent('start', Array)
+#10 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Engine.php(131): flight\core\Dispatcher->run('start', Array)
+#11 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Flight.php(126): flight\Engine->__call('start', Array)
+#12 /Applications/MAMP/htdocs/online-bookstore/backend/index.php(26): Flight::__callStatic('start', Array)
+#13 {main}
+Error: Non-static method UsersDao::getAll() cannot be called statically in /Applications/MAMP/htdocs/online-bookstore/backend/services/UsersService.php:8
+Stack trace:
+#0 /Applications/MAMP/htdocs/online-bookstore/backend/routes/UsersRoutes.php(24): UsersService->getAllUsers()
+#1 [internal function]: {closure}()
+#2 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(354): call_user_func_array(Object(Closure), Array)
+#3 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Object(Closure), Array)
+#4 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Engine.php(576): flight\core\Dispatcher->execute(Object(Closure), Array)
+#5 [internal function]: flight\Engine->_start()
+#6 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(376): call_user_func_array(Array, Array)
+#7 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(287): flight\core\Dispatcher->invokeCallable(Array, Array)
+#8 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(131): flight\core\Dispatcher->execute(Array, Array)
+#9 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/core/Dispatcher.php(95): flight\core\Dispatcher->runEvent('start', Array)
+#10 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Engine.php(131): flight\core\Dispatcher->run('start', Array)
+#11 /Applications/MAMP/htdocs/online-bookstore/vendor/mikecao/flight/flight/Flight.php(126): flight\Engine->__call('start', Array)
+#12 /Applications/MAMP/htdocs/online-bookstore/backend/index.php(26): Flight::__callStatic('start', Array)
+#13 {main}

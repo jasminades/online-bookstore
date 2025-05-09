@@ -1,16 +1,22 @@
 <?php
 
-class UsersDAO {
-    public static function create($name, $email, $password, $role = 'customer') {
+require_once __DIR__ . "/BaseDao.php";
+
+class UsersDao extends BaseDao
+{
+    public function __construct()
+    {
+        parent::__construct("users");
+    }
+
+    public function create($name, $email, $password, $role = 'customer')
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         try {
-            $conn = Database::getConnection();
-            
-            $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())");
-            
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            
-            $stmt->execute([$name, $email, $hashedPassword, $role]);
-            
+            return $this->insert(
+                ["name", "email", "password", "role", "created_at"],
+                [$name, $email, $hashedPassword, $role, date('Y-m-d H:i:s')]
+            );
         } catch (PDOException $e) {
             if ($e->getCode() == 23000) {
                 echo "Error: Email already exists.";
@@ -20,61 +26,28 @@ class UsersDAO {
         }
     }
 
-    public static function getAll() { 
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->query("SELECT * FROM Users");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public static function getAll() {
+        $db = Database::getConnection(); 
+        $stmt = $db->query("SELECT * FROM users");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getById($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Users WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function getById($id)
+    {
+        return $this->query_unique("SELECT * FROM users WHERE id = :id", ['id' => $id]);
     }
 
-    public static function update($id, $name, $email, $role) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("UPDATE Users SET name = ?, email = ?, role = ? WHERE id = ?");
-            $stmt->execute([$name, $email, $role, $id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function update($id, $name, $email, $role)
+    {
+        return $this->execute(
+            "UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id",
+            ['name' => $name, 'email' => $email, 'role' => $role, 'id' => $id]
+        );
     }
 
-    public static function updatePartial($id, $fields){
-        try {
-            $conn = Database::getConnection();
-            $columns = array_keys($fields);
-            $values = array_values($fields);
 
-            $setClause = implode(", ", array_map(fn($col) => "$col = ?", $columns));
-            $stmt = $conn->prepare("UPDATE Users SET $setClause WHERE id = ?");
-            $values[] = $id;
-            $stmt->execute($values);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-    }
-
-    public static function delete($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("DELETE FROM Users WHERE id = ?");
-            $stmt->execute([$id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function delete($id)
+    {
+        return $this->execute("DELETE FROM users WHERE id = :id", ['id' => $id]);
     }
 }
-
-?>

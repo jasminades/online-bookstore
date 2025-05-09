@@ -1,59 +1,40 @@
 <?php
 
-class CategoriesDAO{
-    public static function create($name){
-        try{
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("INSERT INTO Categories (name) VALUES (?)");
-            $stmt->execute([$name]);
-            return $conn->lastInsertId();
-        }catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+require_once __DIR__ . "/BaseDao.php";
+
+class CategoriesDao extends BaseDao
+{
+    public function __construct()
+    {
+        parent::__construct("categories");
     }
 
-
-    public static function getAll(){
-        try{
-            $conn = Database::getConnection();
-            $stmt = $conn->query("SELECT * FROM Categories");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+    public function create($name)
+    {
+        $entity = ['name' => $name];
+        return $this->insert("categories", $entity);
     }
 
-    
-    public static function getById($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Categories WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function getAll()
+    {
+        return $this->query("SELECT * FROM categories", []);
     }
 
-
-    public static function update($id, $name) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("UPDATE Categories SET name = ? WHERE id = ?");
-            $stmt->execute([$name, $id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function getById($id)
+    {
+        return $this->query_unique("SELECT * FROM categories WHERE id = :id", ['id' => $id]);
     }
 
+    public function update($id, $name)
+    {
+        return $this->execute(
+            "UPDATE categories SET name = :name WHERE id = :id",
+            ['name' => $name, 'id' => $id]
+        );
+    }
 
-    public static function delete($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("DELETE FROM Categories WHERE id = ?");
-            $stmt->execute([$id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function delete($id)
+    {
+        return $this->execute("DELETE FROM categories WHERE id = :id", ['id' => $id]);
     }
 }
