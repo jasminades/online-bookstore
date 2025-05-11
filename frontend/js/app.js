@@ -24,15 +24,42 @@ function loadPage(page) {
             })
             .then(data => {
                 content.innerHTML = data;
-                window.history.pushState({ page: page }, page, `#${page}`);
 
-                attachEventListeners();
+                const scripts = content.querySelectorAll("script");
+
+                const loadScripts = async (scripts) => {
+                    for (const oldScript of scripts) {
+                        const newScript = document.createElement("script");
+                        if (oldScript.src) {
+                            await new Promise((resolve, reject) => {
+                                newScript.src = oldScript.src;
+                                newScript.onload = resolve;
+                                newScript.onerror = reject;
+                                document.body.appendChild(newScript);
+                            });
+                        } else {
+                            newScript.textContent = oldScript.textContent;
+                            document.body.appendChild(newScript);
+                        }
+                        oldScript.remove();
+                    }
+                };
+
+                loadScripts(scripts).then(() => {
+                    window.history.pushState({ page: page }, page, `#${page}`);
+                    attachEventListeners();
+                }).catch(error => {
+                    console.error('Error loading scripts:', error);
+                });
+
             })
             .catch(error => console.error('Error loading page:', error));
     } else {
         console.error("Container with id 'main-content' not found.");
     }
 }
+
+
 
 function attachEventListeners() {
     //  navigation links 

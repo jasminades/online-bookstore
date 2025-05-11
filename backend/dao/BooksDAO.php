@@ -49,4 +49,9 @@ class BooksDao extends BaseDao
     {
         return $this->query("SELECT * FROM books", []);
     }
+
+    public function get_all_featured_books()
+    {
+        return $this->query("SELECT * FROM books LIMIT 3", []);
+    }
 }

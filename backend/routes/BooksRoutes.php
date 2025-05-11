@@ -165,3 +165,9 @@ Flight::route('DELETE /books/@id', function($id) use ($bookService){
         Flight::json(["error" => $e->getMessage()], 400);
     }
 });
+
+
+
+Flight::route('GET /featured-books', function () use($bookService) {
+    Flight::json($bookService->featuredBooks());
+});

@@ -1,5 +1,9 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 require './../vendor/autoload.php';
 require './dao/Database.php';
 
@@ -7,8 +11,8 @@ require './dao/Database.php';
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-//require './routes/AuthRoutes.php';
-//Flight::register('auth_service', "AuthService");
+require './routes/AuthRoutes.php';
+Flight::register('auth_service', "AuthService");
 
 Flight::route('GET /', function() {
     echo "working!";
@@ -19,7 +23,7 @@ require_once './routes/BooksRoutes.php';
 require_once './routes/CategoriesRoutes.php';
 require_once './routes/OrdersRoutes.php';
 require_once './routes/ReviewsRoutes.php';
-//require_once './middleware/MiddlewareRoutes.php';
+require_once './middleware/MiddlewareRoutes.php';
 
 
 

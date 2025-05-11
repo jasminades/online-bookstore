@@ -61,4 +61,9 @@ class BooksService extends BaseService {
         $this->validateBookData(['id' => $id], true);
         return $this->dao->delete($id);
     }
+
+    public function featuredBooks() {
+        return $this->dao->get_all_featured_books();
+    }
+
 }

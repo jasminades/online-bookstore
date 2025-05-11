@@ -10,36 +10,12 @@
 
 <section id="home">
     <!-- books display-->
-    <div class="container">
-        <h2 class="section-title">Featured Books</h2>
-        <div class="book-grid">
-            <!-- book 1 -->
-            <div class="book-card">
-                <img src="../static/images/book1.jpg" alt="Book 1" class="book-image" />
-                <h3 class="book-title">Letters to Milena</h3>
-                <p class="book-author">Franz Kafka</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
+    <div class="container mt-5">
+        <h2>Featured Books</h2>
+        <div class="book-grid" id="featured-books-container"></div>
+     </div>
 
-            <!-- book 2 -->
-            <div class="book-card">
-                <img src="../static/images/book2.jpg" alt="Book 2" class="book-image" />
-                <h3 class="book-title">On the Shore</h3>
-                <p class="book-author">Murakami</p>
-                <p class="book-price">$15.99</p>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-
-            <!-- book 3 -->
-            <div class="book-card">
-                <img src="../static/images/book3.jpg" alt="Book 3" class="book-image" />
-                <h3 class="book-title">The Body in the Library</h3>
-                <p class="book-author">Agatha Christie</p>
-                <p class="book-price">$12.99</p>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-        </div>
+       
 
         <!-- pager -->
         <div class="d-flex justify-content-end mb-4">
@@ -108,3 +84,11 @@
         </div>   
     </div>
 </section>
+
+<script src="../utils/constants.js"></script>
+<script src="../utils/rest-client.js"></script>
+<script src="../services/FeaturedBooksService.js"></script>
+
+<script>
+    FeaturedBooksService.init();
+</script>
