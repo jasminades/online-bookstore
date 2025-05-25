@@ -1,52 +1,165 @@
- <!-- page header-->
- <header class="masthead" style="background-image: url('')">
-  <div class="container">
-      <div class="site-heading">
-          <h1>Register to Books & Beyond</h1>
-          <span class="subheading">Become our member today!</span>
-      </div>
-  </div>
-</header>
-
-
-<section id="register">
-  <div class="register-container">
-      <h2>Create an Account</h2>
-      <form id="register-form">
-          <div class="input-group">
-              <label for="first-name">First Name</label>
-              <input type="text" id="first-name" name="first-name" required>
-          </div>
-
-          <div class="input-group">
-              <label for="last-name">Last Name</label>
-              <input type="text" id="last-name" name="last-name" required>
-          </div>
-
-          <div class="input-group">
-              <label for="username">Username</label>
-              <input type="text" id="username" name="username" required>
-          </div>
-
-          <div class="input-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" required>
-          </div>
-
-          <div class="input-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" name="password" required>
-          </div>
-
-          <div class="input-group">
-              <label for="confirm-password">Confirm Password</label>
-              <input type="password" id="confirm-password" name="confirm-password" required>
-          </div>
-
-          <button type="submit" class="btn register-btn">Register</button>
-      </form>
-
-      <p class="login-link">Already have an account? <a href="#login" data-page="login">Log in</a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <style>
+    body{
+        background-color: #ece6df;
+    }
     
+    .register-container {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #d5cbc0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+    }
+
+    .register-container h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .input-group {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+        margin-bottom: 15px;
+    }
+
+    .input-group label {
+        width: 100%;
+        font-weight: bold;
+        margin-bottom: 5px;
+        text-align: left; 
+    }
+
+    .input-group input {
+        width: 100%;
+        max-width: 400px; 
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1.2em;
+        display: block;
+        margin: auto;
+    }
+
+    .register-btn {
+        width: 50%;
+        padding: 12px;
+        background-color: #20446b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.2em;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .register-btn:hover {
+        background-color: #27598f;
+    }
+
+    .login-link {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .login-link a {
+        color: #183e67;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    #response {
+        margin-top: 15px;
+        font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-container">
+    <h2>Register</h2>
+    <form id="register-form">
+      <div class="input-group">
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" placeholder="First Name" required />
+      </div>
+
+      <div class="input-group">
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" placeholder="Last Name" required />
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Password" required />
+      </div>
+
+      <button type="submit" class="register-btn">Register</button>
+    </form>
+
+    <p id="response"></p>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
   </div>
-</section>
+
+  <script>
+    document.getElementById('register-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const data = {
+        first_name: document.getElementById('first_name').value.trim(),
+        last_name: document.getElementById('last_name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value
+      };
+
+      try {
+        const res = await fetch('http://localhost:8000/backend/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const responseText = document.getElementById('response');
+
+        if (!res.ok) {
+          const errText = await res.text();
+          responseText.innerText = 'Error: ' + errText;
+          responseText.style.color = 'red';
+        } else {
+          const result = await res.json();
+          responseText.innerText = 'Success: ' + result.message;
+          responseText.style.color = 'green';
+        }
+
+      } catch (err) {
+        document.getElementById('response').innerText = 'Error: ' + err.message;
+        document.getElementById('response').style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>

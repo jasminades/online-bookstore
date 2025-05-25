@@ -21,7 +21,9 @@ class AuthService {
 
         $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT);
         $data['role'] = $data['role'] ?? 'customer'; 
-        $data['name'] = $data['name'] ?? 'New User';
+        $data['first_name'] = $data['first_name'] ?? 'New';
+        $data['last_name'] = $data['last_name'] ?? 'User';
+
 
         $newUser = $this->auth_dao->create_user($data);
 

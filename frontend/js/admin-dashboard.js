@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("http://localhost/your_project/books") // Adjust URL to match your API
+    fetch("http://localhost/your_project/books") 
         .then(response => response.json())
         .then(data => {
             const booksTable = document.getElementById("books-list");
-            booksTable.innerHTML = ""; // Clear existing content
+            booksTable.innerHTML = ""; 
 
             data.forEach(book => {
                 booksTable.innerHTML += `
