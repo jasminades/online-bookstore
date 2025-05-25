@@ -142,7 +142,6 @@
       } else {
         const result = await res.json();
 
-        // Save token in localStorage
         localStorage.setItem('token', result.data.token);
 
         responseText.innerText = 'Success: ' + result.message;

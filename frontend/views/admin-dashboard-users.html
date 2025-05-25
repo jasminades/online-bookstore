@@ -36,11 +36,12 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Full Nanme</th>
+                            <th>First Name</th>
+                            <th>Last
+                                 Name</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Created at</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="users-list">
@@ -86,7 +87,14 @@
 
 
         document.addEventListener("DOMContentLoaded", function() {
-        fetch('http://localhost:8000/backend/users')
+        const token = localStorage.getItem('token'); 
+
+        fetch('http://localhost:8000/backend/users', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
             .then(response => response.json())
             .then(data => {
                 console.log("Fetched users data:", data); 
@@ -103,14 +111,12 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${user.id}</td>
-                        <td>${user.name}</td>
+                        <td>${user.first_name}</td>
+                        <td>${user.last_name}</td>
                         <td>${user.email}</td>
                         <td>${user.role}</td>
                         <td>${user.created_at}</td>
-                        <td>
-                            <a href="edit-user.html?id=${user.id}" class="btn btn-primary btn-sm">Edit</a>
-                            <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button>
-                        </td>
+                        
                      `;
                      usersList.appendChild(row); 
                 });
@@ -120,19 +126,7 @@
              });
     });
 
-        function deleteUser(userId) {
-            fetch(`http://localhost:8000/backend/users/${userId}`, {
-                method: 'DELETE',
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('User deleted successfully');
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Error deleting user:', error);
-            });
-        }
+        
     </script>
     
 
