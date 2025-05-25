@@ -15,6 +15,11 @@ class ReviewsService {
         $this->usersDAO = new UsersDAO(); 
     }
 
+    public function getAll() {
+        return $this->reviewsDAO->getAll(); 
+    }
+
+
     public function getAllByBook($book_id) {
         $reviews = $this->reviewsDAO->getAllByBook($book_id);
         if (!$reviews) {

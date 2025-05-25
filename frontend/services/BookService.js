@@ -22,7 +22,7 @@ let BookService = {
       books.forEach(function (book) {
         let card = `
           <div class="books-card">
-            <img src="${book.image_url || '../static/images/book1.jpg'}" alt="Book Cover">
+            <img src="${book.image_url || '../static/images/background.jpg'}" alt="Book Cover">
             <h3 class="book-title">${book.title}</h3>
             <p class="book-author">by ${book.author}</p>
             <p class="book-category">Category: ${book.category_name || 'Unknown'}</p>

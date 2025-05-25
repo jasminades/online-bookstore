@@ -4,14 +4,36 @@ require_once './services/ReviewsService.php';
 
 $reviewsService = new ReviewsService();
 
-Flight::route('GET /reviews', function() {
-    echo "Reviews route is working!";
-});
+/**
+ * @OA\Get(
+ *     path="/reviews",
+ *     summary="Get all reviews",
+ *     tags={"Reviews"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of all reviews",
+ *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Review"))
+ *     )
+ * )
+ */
+Flight::route('GET /reviews', function() use ($reviewsService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
 
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
+    try {
+        Flight::json($reviewsService->getAll());
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
+    }
+});
 
 /**
  * @OA\Get(
- *     path="/reviews/{book_id}",
+ *     path="/reviews/book/{book_id}",
  *     summary="Get all reviews for a book",
  *     tags={"Reviews"},
  *     @OA\Parameter(
@@ -33,6 +55,13 @@ Flight::route('GET /reviews', function() {
  * )
  */
 Flight::route('GET /reviews/@book_id', function($book_id) use ($reviewsService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
     try {
         Flight::json($reviewsService->getAllByBook($book_id));
     } catch (Exception $e) {
@@ -40,36 +69,6 @@ Flight::route('GET /reviews/@book_id', function($book_id) use ($reviewsService) 
     }
 });
 
-/**
- * @OA\Get(
- *     path="/reviews/{id}",
- *     summary="Get a review by ID",
- *     tags={"Reviews"},
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         description="Review ID",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Review details",
- *         @OA\JsonContent(ref="#/components/schemas/Review")
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="Review not found"
- *     )
- * )
- */
-Flight::route('GET /reviews/@id', function($id) use ($reviewsService) {
-    try {
-        Flight::json($reviewsService->get_by_id($id));
-    } catch (Exception $e) {
-        Flight::json(["error" => $e->getMessage()], 400);
-    }
-});
 
 /**
  * @OA\Post(
@@ -97,6 +96,13 @@ Flight::route('GET /reviews/@id', function($id) use ($reviewsService) {
  * )
  */
 Flight::route('POST /reviews', function() use ($reviewsService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin', 'customer');
+
     try {
         $data = Flight::request()->data->getData();
         $review_id = $reviewsService->createReview($data);
@@ -141,6 +147,13 @@ Flight::route('POST /reviews', function() use ($reviewsService) {
  * )
  */
 Flight::route('PUT /reviews/@id', function($id) use ($reviewsService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin', 'customer');
+    
     try {
         $data = Flight::request()->data->getData();
         Flight::json($reviewsService->updateReview($id, $data));
@@ -172,6 +185,13 @@ Flight::route('PUT /reviews/@id', function($id) use ($reviewsService) {
  * )
  */
 Flight::route('DELETE /reviews/@id', function($id) use ($reviewsService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin', 'customer');
+
     try {
         Flight::json($reviewsService->deleteReview($id));
     } catch (Exception $e) {

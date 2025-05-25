@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Using RestClient</title>
+  <!-- Load jQuery first -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Then your RestClient -->
+
+  <script src="./../utils/constants.js"></script>
+  <script src="./../utils/rest-client.js"></script>
+</head>
+<body>
+  <script>
+    RestClient.post("/books", {"email": "jasmina@test.com", "password": "jasmina123"}, function (data) {
+        console.log(data);
+      }, function (error) {
+        console.error("Failed to fetch books:", error);
+        toastr.error("Failed to load books.");
+      });
+
+  </script>
+</body>
+</html>

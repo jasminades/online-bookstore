@@ -3,12 +3,12 @@ let RestClient = {
       $.ajax({
         url: Constants.PROJECT_BASE_URL + url,
         type: "GET",
-        /* beforeSend: function (xhr) {
+        beforeSend: function (xhr) {
           xhr.setRequestHeader(
             "Authentication",
             localStorage.getItem("user_token")
           );
-        }, */
+        },
         success: function (response) {
           if (callback) callback(response);
         },
@@ -21,12 +21,12 @@ let RestClient = {
       $.ajax({
         url: Constants.PROJECT_BASE_URL + url,
         type: method,
-        /* beforeSend: function (xhr) {
+        beforeSend: function (xhr) {
           xhr.setRequestHeader(
             "Authentication",
             localStorage.getItem("user_token")
           );
-        }, */
+        },
         data: data,
       })
         .done(function (response, status, jqXHR) {

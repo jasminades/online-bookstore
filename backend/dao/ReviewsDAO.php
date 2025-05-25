@@ -9,6 +9,12 @@ class ReviewsDao extends BaseDao
         parent::__construct("reviews");
     }
 
+    
+    public function getAll() {
+        return $this->query("SELECT * FROM reviews", []);
+    }
+
+
     public function create($book_id, $user_id, $rating, $comment)
     {
         $review = [
