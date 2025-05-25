@@ -1,11 +1,11 @@
 let FeaturedBooksService = {
     init: function () {
-        console.log("Featured Books Service Initialized");
+        console.log("init radi");
         FeaturedBooksService.getFeaturedBooks();
     },
 
     getFeaturedBooks: function () {
-        console.log("Fetching Featured Books...");
+        console.log("get radi");
         RestClient.get("/featured-books", function (data) {
             FeaturedBooksService.renderFeaturedBooks(data);
         }, function (error) {
@@ -15,7 +15,7 @@ let FeaturedBooksService = {
     },
 
     renderFeaturedBooks: function (books) {
-        console.log("Rendering Featured Books...");
+        console.log("render radi");
         let container = $("#featured-books-container");
         container.empty();
 

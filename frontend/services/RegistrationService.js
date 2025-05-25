@@ -1,5 +1,3 @@
-// registerService.js
-
 export async function registerUser(userData) {
   try {
     const response = await fetch('/auth/register', {
