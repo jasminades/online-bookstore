@@ -1,246 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Book Store" />
-    <meta name="author" content="" />
-    <title>Book & Beyond</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css" />
-    <link href="../css/styles.css" rel="stylesheet" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book & Beyond</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/styles.css" rel="stylesheet" />
 </head>
 <body>
 
-    
+<section id="admin-dashboard">
+  <div class="admin-sidebar">
+    <h3 class="admin-heading">Admin Dashboard</h3>
+    <a href="admin-dashboard-books.html">Manage Books</a>
+    <a href="admin-dashboard-orders.html">Manage Orders</a>
+    <a href="admin-dashboard-users.html">Users</a>
+    <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
+  </div>
 
-    <section id="admin-dashboard">
-        <div class="admin-sidebar">
-            <h3 class="admin-heading">Admin Dashboard</h3>
-            <a href="admin-dashboard-books.html">Manage Books</a>
-            <a href="admin-dashboard-orders.html">Manage Orders</a>
-            <a href="admin-dashboard-users.html">Users</a>
-            <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
-        </div>
-    
-        <div class="admin-content">
-            <header class="admin-masthead">
-                <div>
-                    <h1 class="admin-main-heading">Welcome to the Admin Dashboard</h1>
-                    <span class="admin-subheading">Manage your Book Store with ease</span>
-                </div>
-            </header>
-    
-            <section id="admin-books">
-                <h1 class="admin-books-list-heading">Books List</h1>
-                <table class="admin-book-list table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="book-list">
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    </section>
+  
+  <div class="admin-content">
+    <header class="admin-masthead">
+      <div>
+        <h1 class="admin-main-heading">Welcome to the Admin Dashboard</h1>
+        <span class="admin-subheading">Manage your Book Store with ease</span>
+      </div>
+    </header>
 
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLogoutModal()">&times;</span>
-            <p>Are you sure you want to logout?</p>
-            <button class="btn confirm-btn" onclick="confirmLogout()">Yes</button>
-            <button class="btn cancel-btn" onclick="closeLogoutModal()">Cancel</button>
-        </div>
-    </div>
+  
 
+  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addBookModal">
+    Add Book
+  </button>
 
-    <div id="editProfileModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeEditProfileModal()">&times;</span>
-        <h3>Edit Book</h3>
-        <form id="editProfileForm" onsubmit="saveProfileChanges(event)">
-            <label for="title">Title:</label>
-            <input type="text" id="title" value="" required>
-
-            <label for="author">Author:</label>
-            <input type="text" id="author" value="" required>
-
-            <label for="price">Price:</label>
-            <input type="number" id="price" value="" required>
-
-            <label for="category">Category:</label>
-            <input type="number" id="category" value="" required>
-
-            <div style="margin-top: 15px;">
-                <button class="btn confirm-btn" type="submit">Save</button>
-                <button class="btn cancel-btn" type="button" onclick="closeEditProfileModal()">Cancel</button>
+    <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" id="addBookForm">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addBookModalLabel">Add New Book</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="add-title" required>
             </div>
+            <div class="mb-3">
+              <label for="add-author" class="form-label">Author</label>
+              <input type="text" class="form-control" id="add-author" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-price" class="form-label">Price</label>
+              <input type="number" step="0.01" class="form-control" id="add-price" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-category" class="form-label">Category ID</label>
+              <input type="number" class="form-control" id="add-category" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Add Book</button>
+          </div>
         </form>
+      </div>
     </div>
+
+    <section id="admin-books">
+      <h1 class="admin-books-list-heading">Books List</h1>
+      <table class="admin-book-list table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="book-list"></tbody>
+      </table>
+    </section>
+  </div>
+</section>
+
+
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeLogoutModal()">&times;</span>
+    <p>Are you sure you want to logout?</p>
+    <button class="btn confirm-btn" onclick="confirmLogout()">Yes</button>
+    <button class="btn cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+  </div>
 </div>
 
 
-    <!-- page footer-->
-    <footer class="border-top bg-dark text-white">
-        <div class="container">
-            <div class="row justify-content-center">
-                <p>&copy; 2025 Book & Beyond. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gyb4f8LgBx5D5yVf3Hrt1VdtqPqaHlQ+IY3o6eF7pXxBe4bUqq7" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqP3A6JXlLf2dGFG2cXn6b6bXgZyT01DbF4T2+3G7KkzC" crossorigin="anonymous"></script>
+<div id="editBookModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeEditBookModal()">&times;</span>
+    <h3>Edit Book</h3>
+    <form id="editBookForm">
+      <input type="hidden" id="edit-id" />
 
-    
-    <script>
+      <label for="edit-title">Title:</label>
+      <input type="text" id="edit-title" required />
 
-        function openLogoutModal() {
-            document.getElementById("logoutModal").style.display = "block";
-        }
-        function closeLogoutModal() {
-            document.getElementById("logoutModal").style.display = "none";
-        }
-        function confirmLogout() {
-            window.location.href = "login.html";
-        }
+      <label for="edit-author">Author:</label>
+      <input type="text" id="edit-author" required />
 
-        document.addEventListener("DOMContentLoaded", function () {
-        fetch('http://localhost:8000/backend/books')
-            .then(response => response.json())
-            .then(data => {
-                const bookList = document.getElementById('book-list');
-                if (!bookList) {
-                    console.error('book-list element not found!');
-                    return;
-                }
+      <label for="edit-price">Price:</label>
+      <input type="number" id="edit-price" required />
 
-                bookList.innerHTML = ""; 
+      <label for="edit-category">Category ID:</label>
+      <input type="number" id="edit-category" required />
 
-                data.forEach(book => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${book.id}</td>
-                        <td>${book.title}</td>
-                        <td>${book.author}</td>
-                        <td>${book.price}</td>
-                        <td>${book.category_id}</td>
-                        <td>
-                            <button class="btn edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
-                            <button class="delete-btn btn btn-danger btn-sm" data-id="${book.id}">Delete</button>
-                        </td>
-                    `;
-
-                bookList.appendChild(row);
-            });
-
-            document.querySelectorAll(".delete-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const bookId = this.getAttribute("data-id");
-                    deleteBook(bookId);
-                });
-            });
-
-            document.querySelectorAll(".edit-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const bookId = this.getAttribute("data-id");
-                    editBook(bookId);
-                });
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching books:', error);
-        });
-});
+      <div style="margin-top: 15px;">
+        <button class="btn confirm-btn" type="submit">Save</button>
+        <button class="btn cancel-btn" type="button" onclick="closeEditBookModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 
-function deleteBook(bookId) {
-    if (confirm("Are you sure you want to delete this book?")) {
-        fetch(`http://localhost:8000/backend/books/${bookId}`, {
-            method: "DELETE",
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.message) {
-                alert(result.message);
-                location.reload();
-            } else {
-                alert("Error deleting book: " + result.error);
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    }
-}
+<script src="../js/admin-books.js"></script>
+<script src="../js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-function editBook(bookId) {
-    const newTitle = prompt("Enter new title:");
-    const newAuthor = prompt("Enter new author:");
-    const newPrice = prompt("Enter new price:");
-    const newCategoryId = prompt("Enter new category ID:");
-
-    if (newTitle && newAuthor && newPrice && newCategoryId) {
-        fetch(`http://localhost:8000/backend/books/${bookId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                title: newTitle,
-                author: newAuthor,
-                price: parseFloat(newPrice),
-                category_id: parseInt(newCategoryId),
-            }),
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.message) {
-                alert(result.message);
-                location.reload(); 
-            } else {
-                alert("Error updating book: " + result.error);
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    }
-}
-
-function openEditProfileModal() {
-    document.getElementById("editProfileModal").style.display = "block";
-}
-
-function closeEditProfileModal() {
-    document.getElementById("editProfileModal").style.display = "none";
-}
-
-function saveProfileChanges(event) {
-    event.preventDefault();
-
-    const title = document.getElementById("title").value;
-    const author = document.getElementById("author").value;
-    const price = document.getElementById("price").value;
-    const category = document.getElementById("category").value;
-
-    
-    document.querySelector(".profile-details p:nth-of-type(1)").innerText = "Title: " + title;
-    document.querySelector(".profile-details p:nth-of-type(2)").innerText = "Author: " + author;
-    document.querySelector(".profile-details p:nth-of-type(3)").innerText = "Price: " + price;
-    document.querySelector(".profile-details p:nth-of-type(4)").innerText = "Category: " + category;
-
-    closeEditProfileModal();
-}
-
-
-    </script>
-
-    <script src="../js/app.js"></script>
-  
 </body>
 </html>

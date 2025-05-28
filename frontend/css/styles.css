@@ -1151,7 +1151,6 @@ body {
     color: white;
 }
 
-/* Modal background */
 .modal {
     display: none;
     position: fixed;
@@ -1173,7 +1172,6 @@ body {
 }
 
 
-/* Modal content box */
 .modal-content {
     background: #ffffff;
     margin: 5% auto;
@@ -1186,7 +1184,6 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Close button */
 .close {
     position: absolute;
     top: 15px;
@@ -1200,7 +1197,6 @@ body {
     color: #000;
 }
 
-/* Modal heading */
 .modal-content h3 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -1209,7 +1205,6 @@ body {
     text-align: center;
 }
 
-/* Form labels and inputs */
 .modal-content label {
     display: block;
     margin: 12px 0 6px;
@@ -1227,10 +1222,9 @@ body {
 }
 .modal-content input:focus {
     outline: none;
-    border-color: #3b82f6; /* Tailwind blue */
+    border-color: #3b82f6;
 }
 
-/* Buttons inside modal */
 .modal-content .btn {
     margin-top: 20px;
     padding: 10px 15px;
@@ -1254,4 +1248,36 @@ body {
 }
 .modal-content .cancel-btn:hover {
     background-color: #e5e7eb;
+}
+
+
+.single-book-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding-top: 100px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.single-book-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 2rem;
+  width: 60%;
+  border-radius: 10px;
+  position: relative;
+}
+
+.single-book-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
 }

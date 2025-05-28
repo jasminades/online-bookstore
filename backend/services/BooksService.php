@@ -58,9 +58,13 @@ class BooksService extends BaseService {
     }
 
     public function deleteBook($id) {
-        $this->validateBookData(['id' => $id], true);
+        $book = $this->dao->getById($id);
+        if (!$book) {
+            throw new Exception("Book not found");
+        }
+
         return $this->dao->delete($id);
-    }
+        }
 
     public function featuredBooks() {
         return $this->dao->get_all_featured_books();
