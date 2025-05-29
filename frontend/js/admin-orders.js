@@ -79,10 +79,9 @@ document.getElementById("addOrderForm")?.addEventListener("submit", function (e)
   e.preventDefault();
 
   const newOrder = {
-    title: document.getElementById("add-title").value,
-    author: document.getElementById("add-author").value,
-    price: parseFloat(document.getElementById("add-price").value),
-    category_id: parseInt(document.getElementById("add-category").value)
+    id: document.getElementById("add-id").value,
+    user_id: document.getElementById("add-user_id").value,
+    book_id: parseFloat(document.getElementById("add-book_id").value)
   };
 
   const token = localStorage.getItem("token");
