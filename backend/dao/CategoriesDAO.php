@@ -47,13 +47,8 @@ class CategoriesDAO{
     }
 
 
-    public static function delete($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("DELETE FROM Categories WHERE id = ?");
-            $stmt->execute([$id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function delete($id)
+    {
+        return $this->delete($id);
     }
 }

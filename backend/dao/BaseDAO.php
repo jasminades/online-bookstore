@@ -63,4 +63,13 @@ class BaseDao {
         $entity['id'] = $this->connection->lastInsertId();
         return $entity;
     }
+
+    public function delete($id) {
+        $query = "DELETE FROM {$this->table} WHERE id = :id";
+        $statement = $this->connection->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        return $statement->rowCount(); 
+    }
+
 }

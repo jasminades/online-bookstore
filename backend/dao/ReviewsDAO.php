@@ -47,6 +47,6 @@ class ReviewsDao extends BaseDao
 
     public function delete($id)
     {
-        return $this->execute("DELETE FROM reviews WHERE id = :id", ['id' => $id]);
+        return $this->delete($id);
     }
 }

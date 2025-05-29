@@ -64,6 +64,8 @@ class OrdersDao extends BaseDao
 
     public function deleteOrder($id)
     {
-        return $this->execute("DELETE FROM orders WHERE id = :id", ['id' => $id]);
+        return $this->delete($id);
+
     }
+
 }
