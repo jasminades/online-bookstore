@@ -2,8 +2,8 @@
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-require_once __DIR__ . './../dao/AuthDao.php';
-require_once './services/AuthService.php';
+require_once './rest/dao/AuthDAO.php';
+require_once './rest/services/AuthService.php';
 
 
 Flight::group('/auth', function () {

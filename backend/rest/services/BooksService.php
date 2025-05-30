@@ -1,7 +1,7 @@
 <?php
 
-require_once './dao/BooksDAO.php';
-require_once './services/BaseService.php';
+require_once './rest/dao/BooksDAO.php';
+require_once './rest/services/BaseService.php';
 
 class BooksService extends BaseService {
     public function __construct() {

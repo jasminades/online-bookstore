@@ -1,6 +1,6 @@
 <?php
 
-require_once './services/CategoriesService.php';
+require_once './rest/services/CategoriesService.php';
 
 $categoriesService = new CategoriesService();
 

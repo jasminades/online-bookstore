@@ -1,6 +1,6 @@
 <?php
 
-require_once './services/UsersService.php';
+require_once './rest/services/UsersService.php';
 
 $usersService = new UsersService();
 $auth_middleware = Flight::get('auth_middleware');

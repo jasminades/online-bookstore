@@ -1,6 +1,6 @@
 <?php
 
-require_once './services/BooksService.php';
+require_once './rest/services/BooksService.php';
 
 $bookService = new BooksService();
 $authMiddleware = Flight::get('auth_middleware');

@@ -1,6 +1,6 @@
 <?php
 
-require_once './services/OrdersService.php';
+require_once './rest/services/OrdersService.php';
 
 $ordersService = new OrdersService();
 

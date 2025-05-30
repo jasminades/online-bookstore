@@ -1,6 +1,6 @@
 <?php
 
-require_once './dao/CategoriesDAO.php';
+require_once './rest/dao/CategoriesDAO.php';
 
 class CategoriesService{
     private $categoriesDAO;

@@ -1,7 +1,7 @@
 <?php
 
-require_once './dao/UsersDAO.php';
-require_once './services/BaseService.php'; 
+require_once './rest/dao/UsersDAO.php';
+require_once './rest/services/BaseService.php'; 
 
 class UsersService extends BaseService {
 

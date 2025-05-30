@@ -1,8 +1,8 @@
 <?php
 
-require_once './dao/ReviewsDAO.php';
-require_once './dao/BooksDAO.php';
-require_once './dao/UsersDAO.php';
+require_once './rest/dao/ReviewsDAO.php';
+require_once './rest/dao/BooksDAO.php';
+require_once './rest/dao/UsersDAO.php';
 
 class ReviewsService {
     private $reviewsDAO;
