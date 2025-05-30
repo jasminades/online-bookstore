@@ -20,14 +20,12 @@ Developed using **FlightPHP**, **JavaScript**, **Bootstrap**, and **MySQL**, thi
 
 ### Backend
 
-* **FlightPHP Micro-Framework**: Lightweight and fast for building RESTful APIs.
+* **FlightPHP Micro-Framework**
 * **Layered Architecture**:
-
   * **Routes** – Handle all API endpoint declarations.
   * **Services** – Implement business logic and input validation.
   * **DAO (Data Access Layer)** – Secure interaction with MySQL using prepared statements.
 * **Middleware**:
-
   * Request validation
   * Authentication and role-based access
   * Logging and error handling
@@ -37,13 +35,7 @@ Developed using **FlightPHP**, **JavaScript**, **Bootstrap**, and **MySQL**, thi
 
 ### Database
 
-* **MySQL Relational Schema** with the following entities:
-
-  * `Users`
-  * `Books`
-  * `Categories`
-  * `Orders`
-  * `Reviews`
+* **MySQL Relational Schema** with the entities.
 * **CRUD Operations** for all entities with referential integrity and constraints.
 
 ---
