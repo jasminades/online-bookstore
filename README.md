@@ -1,6 +1,6 @@
 
 
-# Book & Beyond – Online Bookstore Web Application
+# Books & Beyond – Online Bookstore Web Application
 
 ## Overview
 
