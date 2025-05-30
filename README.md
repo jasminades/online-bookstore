@@ -1,6 +1,4 @@
-Sure! Here's a professional, neatly structured `README.md` file styled exactly like your BeeHive example, but tailored for your **Online Bookstore** project:
 
----
 
 # Book & Beyond – Online Bookstore Web Application
 
