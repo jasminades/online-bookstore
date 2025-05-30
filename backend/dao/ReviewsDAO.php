@@ -1,57 +1,52 @@
 <?php
 
-class ReviewsDAO {
-    public static function create($book_id, $user_id, $rating, $comment) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("INSERT INTO Reviews (book_id, user_id, rating, comment, created_at) VALUES (?, ?, ?, ?, NOW())");
-            $stmt->execute([$book_id, $user_id, $rating, $comment]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+require_once __DIR__ . "/BaseDao.php";
+
+class ReviewsDao extends BaseDao
+{
+    public function __construct()
+    {
+        parent::__construct("reviews");
     }
 
-    public static function getAllByBook($book_id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Reviews WHERE book_id = ?");
-            $stmt->execute([$book_id]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    
+    public function getAll() {
+        return $this->query("SELECT * FROM reviews", []);
     }
 
-    public static function getById($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Reviews WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+
+    public function create($book_id, $user_id, $rating, $comment)
+    {
+        $review = [
+            'book_id' => $book_id,
+            'user_id' => $user_id,
+            'rating' => $rating,
+            'comment' => $comment,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        return $this->insert("reviews", $review);
     }
 
-    public static function update($id, $rating, $comment) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("UPDATE Reviews SET rating = ?, comment = ? WHERE id = ?");
-            $stmt->execute([$rating, $comment, $id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function getAllByBook($book_id)
+    {
+        return $this->query("SELECT * FROM reviews WHERE book_id = :book_id", ['book_id' => $book_id]);
     }
 
-    public static function delete($id) {
-        try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("DELETE FROM Reviews WHERE id = ?");
-            $stmt->execute([$id]);
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+    public function get_by_id($id)
+    {
+        return $this->query_unique("SELECT * FROM reviews WHERE id = :id", ['id' => $id]);
+    }
+
+    public function update($id, $rating, $comment)
+    {
+        return $this->execute(
+            "UPDATE reviews SET rating = :rating, comment = :comment WHERE id = :id",
+            ['rating' => $rating, 'comment' => $comment, 'id' => $id]
+        );
+    }
+
+    public function delete($id)
+    {
+        return $this->execute("DELETE FROM reviews WHERE id = :id", ['id' => $id]);
     }
 }
-
-?>

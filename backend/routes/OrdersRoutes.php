@@ -1,6 +1,5 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/OrdersService.php';
 
 $ordersService = new OrdersService();
@@ -19,7 +18,7 @@ $ordersService = new OrdersService();
  */
 Flight::route('GET /orders', function() use ($ordersService) {
     try {
-        $orders = $ordersService->getAllOrders(); // Fetch all orders
+        $orders = $ordersService->getAllOrders(); 
         Flight::json($orders);
     } catch (Exception $e) {
         Flight::json(["error" => $e->getMessage()], 400);
@@ -197,4 +196,3 @@ Flight::route('DELETE /orders/@id', function($id) use ($ordersService) {
     }
 });
 
-Flight::start();

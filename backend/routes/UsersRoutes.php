@@ -1,9 +1,10 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/UsersService.php';
 
 $usersService = new UsersService();
+$auth_middleware = Flight::get('auth_middleware');
+
 
 /**
  * @OA\Get(
@@ -21,9 +22,19 @@ $usersService = new UsersService();
  *     )
  * )
  */
-Flight::route('GET /users', function() use ($usersService) {
-    Flight::json($usersService->getAllUsers());
+
+Flight::route('GET /users', function() {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin'); 
+
+    Flight::json(Flight::usersService()->get_all());
 });
+
+
 
 /**
  * @OA\Get(
@@ -48,9 +59,17 @@ Flight::route('GET /users', function() use ($usersService) {
  *     )
  * )
  */
-Flight::route('GET /users/@id', function($id) use ($usersService) {
-    Flight::json($usersService->getUserById($id));
+
+Flight::route('GET /users/@id', function($id) {
+     $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin'); 
+    Flight::json(Flight::usersService()->get_by_id($id));
 });
+
 
 /**
  * @OA\Post(
@@ -76,13 +95,16 @@ Flight::route('GET /users/@id', function($id) use ($usersService) {
  *     )
  * )
  */
-Flight::route('POST /users', function() use ($usersService) {
+
+ Flight::route('POST /users', function() use ($usersService){
+     $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin'); 
     $data = Flight::request()->data->getData();
-    try {
-        Flight::json($usersService->createUser($data));
-    } catch (Exception $e) {
-        Flight::json(["error" => $e->getMessage()], 400);
-    }
+    Flight::json($usersService->add($data));
 });
 
 /**
@@ -101,7 +123,6 @@ Flight::route('POST /users', function() use ($usersService) {
  *         required=true,
  *         @OA\JsonContent(
  *             required={"name", "email", "password"},
- *             @OA\Property(property="name", type="string"),
  *             @OA\Property(property="email", type="string"),
  *             @OA\Property(property="password", type="string")
  *         )
@@ -121,6 +142,13 @@ Flight::route('POST /users', function() use ($usersService) {
  * )
  */
 Flight::route('PUT /users/@id', function($id) use ($usersService) {
+     $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin'); 
+
     $data = Flight::request()->data->getData();
     try {
         Flight::json($usersService->updateUser($id, $data));
@@ -152,7 +180,13 @@ Flight::route('PUT /users/@id', function($id) use ($usersService) {
  * )
  */
 Flight::route('DELETE /users/@id', function($id) use ($usersService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin'); 
+
     Flight::json($usersService->deleteUser($id));
 });
 
-Flight::start();

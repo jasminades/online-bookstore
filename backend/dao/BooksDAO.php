@@ -1,59 +1,57 @@
 <?php
 
-class BooksDao{
-    
-    public static function create($title, $author, $price, $category_id){
-        try{
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("INSERT INTO Books (title, author, price, category_id, created_at) VALUES (?, ?, ?, ?, NOW())");
-            $stmt->execute([$title, $author, $price, $category_id]);
-        }catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+require_once __DIR__ . "/BaseDao.php";
+
+class BooksDao extends BaseDao
+{
+    public function __construct()
+    {
+        parent::__construct("books");
     }
 
-
-    public static function getAll(){
-        try{
-            $conn = Database::getConnection();
-            $stmt = $conn->query("SELECT * FROM Books");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+    public function getById($id)
+    {
+        return $this->query_unique("SELECT * FROM books WHERE id = :id", ['id' => $id]);
     }
 
-
-    public static function getById($id){
-        try{
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Books WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+    public function update($id, $title, $author, $price, $category_id)
+    {
+        $entity = [
+            'title' => $title,
+            'author' => $author,
+            'price' => $price,
+            'category_id' => $category_id
+        ];
+        return $this->execute(
+            "UPDATE books SET title = :title, author = :author, price = :price, category_id = :category_id WHERE id = :id",
+            array_merge($entity, ['id' => $id])
+        );
     }
 
-
-    public static function update($id, $title, $author, $price, $category_id){
-        try{
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("UPDATE Books SET title = ?, author = ?, price = ?, category_id = ? WHERE id = ?");
-            $stmt->execute([$title, $author, $price, $category_id, $id]);
-        }catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+    public function delete($id)
+    {
+        return $this->execute("DELETE FROM books WHERE id = :id", ['id' => $id]);
     }
 
+    public function create($title, $author, $price, $category_id)
+    {
+        $entity = [
+            'title' => $title,
+            'author' => $author,
+            'price' => $price,
+            'category_id' => $category_id,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        return $this->insert("books", $entity);
+    }
 
-    public static function delete($id){
-        try{
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("DELETE FROM Books WHERE id = ?");
-            $stmt->execute([$id]);
-        }catch (PDOException $e){
-            echo "Error: " . $e->getMessage();
-        }
+    public function get_all()
+    {
+        return $this->query("SELECT * FROM books", []);
+    }
+
+    public function get_all_featured_books()
+    {
+        return $this->query("SELECT * FROM books LIMIT 3", []);
     }
 }

@@ -2,35 +2,49 @@
 
 require_once './dao/OrdersDAO.php';
 require_once './dao/UsersDAO.php';
+require_once './services/BaseService.php';
 
-class OrdersService {
-    private $ordersDAO;
+class OrdersService extends BaseService
+{
+    private $usersDAO;
 
-    public function __construct() {
-        $this->ordersDAO = new OrdersDAO();
+    const STATUS_PENDING = 'pending';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELED = 'canceled';
+
+    public function __construct()
+    {
+        $ordersDAO = new OrdersDAO();
+        parent::__construct($ordersDAO); 
+        $this->usersDAO = new UsersDAO();
     }
 
-    public function getAllOrders() {
-        return OrdersDAO::getAll();
+    public function getAllOrders()
+    {
+        return $this->get_all();
     }
 
-    public function getOrdersByUser($user_id) {
-        return $this->ordersDAO->getAllByUser($user_id);
+    public function getOrdersByUser($user_id)
+    {
+        return $this->dao->getAllByUser($user_id); 
     }
 
-    public function getOrderById($id) {
-        $order = $this->ordersDAO->getById($id);
+    public function getOrderById($id)
+    {
+        $order = $this->get_by_id($id); 
+
         if (!$order) {
             throw new Exception("Order not found");
         }
+
         return $order;
     }
 
-    // validation
-    private function validateOrderData($data, $isUpdate = false) {
+    private function validateOrderData($data, $isUpdate = false)
+    {
         $errors = [];
 
-        if (!isset($data['user_id']) || !UsersDAO::getById($data['user_id'])) {
+        if (!isset($data['user_id']) || !$this->usersDAO->get_by_id($data['user_id'])) {
             $errors[] = "Invalid or non-existent user.";
         }
 
@@ -38,7 +52,7 @@ class OrdersService {
             $errors[] = "Total price must be a positive number.";
         }
 
-        if (isset($data['status']) && !in_array($data['status'], ['pending', 'completed', 'canceled'])) {
+        if (isset($data['status']) && !in_array($data['status'], [self::STATUS_PENDING, self::STATUS_COMPLETED, self::STATUS_CANCELED])) {
             $errors[] = "Invalid order status. Allowed values: 'pending', 'completed', 'canceled'.";
         }
 
@@ -47,28 +61,20 @@ class OrdersService {
         }
     }
 
-    public function createOrder($data) {
+    public function createOrder($data)
+    {
         $this->validateOrderData($data);
-        return $this->ordersDAO->create($data['user_id'], $data['total_price'], $data['status'] ?? 'pending');
+        return $this->add($data); 
     }
 
-   
-    public function updateOrder($id, $data) {
+    public function updateOrder($id, $data)
+    {
         $this->validateOrderData($data, true);
-        $updated = $this->ordersDAO->update($id, $data['total_price'], $data['status']);
-
-        if (!$updated) {
-            throw new Exception("Order not found");
-        }
-        return $updated;
+        return $this->update($data, $id); 
     }
 
-   
-    public function deleteOrder($id) {
-        $deleted = $this->ordersDAO->delete($id);
-        if (!$deleted) {
-            throw new Exception("Order not found");
-        }
-        return $deleted;
+    public function deleteOrder($id)
+    {
+        return $this->delete($id); 
     }
 }

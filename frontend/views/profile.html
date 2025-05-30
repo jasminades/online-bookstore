@@ -16,7 +16,9 @@
                 <h2>John Doe</h2>
                 <p>Username: johndoe123</p>
                 <p>Email Address: johndoe@example.com</p>
-                <button class="btn edit-profile-btn">Edit Profile</button>
+                <button class="btn edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
+                <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
+
             </div>
         </aside>
 
@@ -47,4 +49,75 @@
             </section>
         </div>
     </div>
+
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogoutModal()">&times;</span>
+            <p>Are you sure you want to logout?</p>
+            <button class="btn confirm-btn" onclick="confirmLogout()">Yes</button>
+            <button class="btn cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+        </div>
+    </div>
+
+<div id="editProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditProfileModal()">&times;</span>
+        <h3>Edit Profile</h3>
+        <form id="editProfileForm" onsubmit="saveProfileChanges(event)">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" value="John Doe" required>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="johndoe123" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" value="johndoe@example.com" required>
+
+            <div style="margin-top: 15px;">
+                <button class="btn confirm-btn" type="submit">Save</button>
+                <button class="btn cancel-btn" type="button" onclick="closeEditProfileModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 </section>
+
+<script>
+function openLogoutModal() {
+    document.getElementById("logoutModal").style.display = "block";
+}
+
+function closeLogoutModal() {
+    document.getElementById("logoutModal").style.display = "none";
+}
+
+function confirmLogout() {
+    window.location.href = "login.html";
+}
+
+function openEditProfileModal() {
+    document.getElementById("editProfileModal").style.display = "block";
+}
+
+function closeEditProfileModal() {
+    document.getElementById("editProfileModal").style.display = "none";
+}
+
+function saveProfileChanges(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+
+    
+    document.querySelector(".profile-details h2").innerText = name;
+    document.querySelector(".profile-details p:nth-of-type(1)").innerText = "Username: " + username;
+    document.querySelector(".profile-details p:nth-of-type(2)").innerText = "Email Address: " + email;
+
+    closeEditProfileModal();
+}
+</script>

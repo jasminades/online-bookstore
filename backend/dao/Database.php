@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . './../config.php';
+
 class Database {
     private static $db;
 
@@ -8,7 +10,6 @@ class Database {
             try {
                 self::$db = new PDO('mysql:host=localhost;dbname=bookstore;charset=utf8', 'root', 'root'); 
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "Connection successful!";
             } catch (PDOException $e) {
                 die("Connection failed: " . $e->getMessage());
             }

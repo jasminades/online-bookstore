@@ -1,41 +1,53 @@
 <?php
 
 require_once './dao/UsersDAO.php';
+require_once './services/BaseService.php'; 
 
-class UsersService {
+class UsersService extends BaseService {
 
-    public function getAllUsers() {
-        return UsersDAO::getAll();
+    public function __construct() {
+        $usersDao = new UsersDAO(); 
+        parent::__construct($usersDao);
     }
 
-    public function getUserById($id) {
-        return UsersDAO::getById($id);
-    }
-
-    
     public function createUser($data) {
         $this->validateUserData($data);
-
+    
         $role = isset($data['role']) ? $data['role'] : 'customer';
         $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-        UsersDAO::create($data['name'], $data['email'], $hashedPassword, $role);
-        return ["message" => "User created successfully"];
+    
+        $entity = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $hashedPassword,
+            'role' => $role,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+    
+        return $this->add($entity);
     }
-
+    
     public function updateUser($id, $data) {
         $this->validateUserData($data);
+    
+        $entity = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'role' => $data['role']
+        ];
+    
+        $this->update($entity, $id); 
         
-        UsersDAO::update($id, $data['name'], $data['email'], $data['role']);
         return ["message" => "User updated successfully"];
     }
-
     
+
     public function deleteUser($id) {
-        UsersDAO::delete($id);
+        $this->delete($id);
         return ["message" => "User deleted successfully"];
     }
 
-    // validation
+
     private function validateUserData($data){
         $errors = [];
 
@@ -60,3 +72,4 @@ class UsersService {
         }
     }
 }
+?>

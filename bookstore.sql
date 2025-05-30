@@ -19,8 +19,11 @@ CREATE TABLE `orders` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT,
   `total_price` DECIMAL(10, 2),
-  `status` VARCHAR(50),
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `status` VARCHAR(50) DEFAULT 'pending', 
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `order_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+  `quantity` INT DEFAULT 1, 
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)  
 );
 
 

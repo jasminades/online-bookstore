@@ -1,11 +1,10 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/BooksService.php';
 
 $bookService = new BooksService();
+$authMiddleware = Flight::get('auth_middleware');
 
-echo "checking if loaded!";
 
 /**
  * @OA\Get(
@@ -20,7 +19,8 @@ echo "checking if loaded!";
  * )
  */
 Flight::route('GET /books', function() use ($bookService){
-    Flight::json($bookService->getAllBooks());
+    Flight::json($bookService->get_all());
+
 });
 
 
@@ -49,6 +49,13 @@ Flight::route('GET /books', function() use ($bookService){
  * )
  */
 Flight::route('GET /books/@id', function($id) use ($bookService){
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin'); 
+
     try{
         Flight::json($bookService->getBookById($id));
     }catch(Exception $e){
@@ -81,14 +88,17 @@ Flight::route('GET /books/@id', function($id) use ($bookService){
  *     )
  * )
  */
-Flight::route('POST /books', function() use ($bookService){
-    try{
-        $data = Flight::request()->data->getData();
-        $bookService->createBook($data);
-        Flight::json(["message" => "Book created successfully"]);
-    }catch(Exception $e){
-        Flight::json(["error" => $e->getMessage()], 400);
-    }
+Flight::route('POST /books', function() use ($bookService, $authMiddleware){
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
+    $data = Flight::request()->data->getData();
+    $bookService->createBook($data);
+    Flight::json(["message" => "Book created successfully"]);
 });
 
 /**
@@ -127,12 +137,19 @@ Flight::route('POST /books', function() use ($bookService){
  *     )
  * )
  */
-Flight::route('PUT /books/@id', function($id) use ($bookService){
-    try{
+Flight::route('PUT /books/@id', function($id) use ($bookService, $authMiddleware){
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
+    try {
         $data = Flight::request()->data->getData();
         $bookService->updateBook($id, $data);
         Flight::json(["message" => "Book updated successfully"]);
-    }catch(Exception $e){
+    } catch (Exception $e) {
         Flight::json(["error" => $e->getMessage()], 400);
     }
 });
@@ -159,11 +176,24 @@ Flight::route('PUT /books/@id', function($id) use ($bookService){
  *     )
  * )
  */
-Flight::route('DELETE /books/@id', function($id) use ($bookService){
-    try{
+Flight::route('DELETE /books/@id', function($id) use ($bookService, $authMiddleware){
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
+    try {
         $bookService->deleteBook($id);
         Flight::json(["message" => "Book deleted successfully"]);
-    }catch(Exception $e){
+    } catch (Exception $e) {
         Flight::json(["error" => $e->getMessage()], 400);
     }
+});
+
+
+
+Flight::route('GET /featured-books', function () use($bookService) {
+    Flight::json($bookService->featuredBooks());
 });

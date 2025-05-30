@@ -1,6 +1,5 @@
 <?php
 
-require '../vendor/autoload.php';
 require_once './services/CategoriesService.php';
 
 $categoriesService = new CategoriesService();
@@ -50,6 +49,13 @@ Flight::route('GET /categories', function() use ($categoriesService){
  * )
  */
 Flight::route('GET /categories/@id', function($id) use ($categoriesService){
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
     try{
         $category = $categoriesService->getCategoryById($id);
         Flight::json($category);
@@ -81,6 +87,13 @@ Flight::route('GET /categories/@id', function($id) use ($categoriesService){
  * )
  */
 Flight::route('POST /categories', function() use ($categoriesService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
     try {
         $data = Flight::request()->data->getData();
         $categoryId = $categoriesService->createCategory($data);
@@ -124,6 +137,13 @@ Flight::route('POST /categories', function() use ($categoriesService) {
  * )
  */
 Flight::route('PUT /categories/@id', function($id) use ($categoriesService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+
     try {
         $data = Flight::request()->data->getData();
         $categoriesService->updateCategory($id, $data);
@@ -155,7 +175,15 @@ Flight::route('PUT /categories/@id', function($id) use ($categoriesService) {
  *     )
  * )
  */
+
 Flight::route('DELETE /categories/@id', function($id) use ($categoriesService) {
+    $auth = new AuthMiddleware();
+    $headers = getallheaders();
+    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
+
+    $auth->verifyToken($token); 
+    $auth->authorizeRole('admin');
+    
     try {
         $categoriesService->deleteCategory($id);
         Flight::json(["message" => "Category deleted successfully"]);
@@ -163,5 +191,3 @@ Flight::route('DELETE /categories/@id', function($id) use ($categoriesService) {
         Flight::json(['error' => $e->getMessage()], 400);
     }
 });
-
-Flight::start();

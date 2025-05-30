@@ -13,7 +13,7 @@ class CategoriesDAO{
     }
 
 
-    public static function getAll(){
+    public static function get_all(){
         try{
             $conn = Database::getConnection();
             $stmt = $conn->query("SELECT * FROM Categories");
@@ -24,7 +24,7 @@ class CategoriesDAO{
     }
 
     
-    public static function getById($id) {
+    public static function get_by_id($id) {
         try {
             $conn = Database::getConnection();
             $stmt = $conn->prepare("SELECT * FROM Categories WHERE id = ?");

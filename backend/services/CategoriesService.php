@@ -11,11 +11,11 @@ class CategoriesService{
 
 
     public function getAllCategories(){
-        return $this->categoriesDAO->getAll();
+        return $this->categoriesDAO->get_all();
     }
 
     public function getCategoryById($id){
-        $category = $this->categoriesDAO->getById($id);
+        $category = $this->categoriesDAO->get_by_id($id);
 
         if(!$category){
             throw new Exception("Category not found");
@@ -23,8 +23,6 @@ class CategoriesService{
         return $category;
     }
 
-
-    // validation
     private function validateCategoryData($data, $isUpdate = false) {
         $errors = [];
 
@@ -33,7 +31,7 @@ class CategoriesService{
         }
 
         if ($isUpdate || isset($data['id'])) {
-            $category = $this->categoriesDAO->getById($data['id']);
+            $category = $this->categoriesDAO->get_by_id($data['id']);
             if (!$category) {
                 $errors[] = "Category not found for update or delete";
             }

@@ -30,98 +30,20 @@
             </ul>
         </aside>
 
+
+       
         <!-- books grid -->
-        <section class="books-grid">
-            <div class="books-card">
-                <img src="../static/images/book1.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-
-            </div>
-            
-            <div class="books-card">
-                <img src="../static/images/book2.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-            
-            <div class="books-card">
-                <img src="../static/images/book1.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-
-            <div class="books-card">
-                <img src="../static/images/book1.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-
-            <div class="books-card">
-                <img src="../static/images/book2.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-            
-            <div class="books-card">
-                <img src="../static/images/book1.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-
-            <div class="books-card">
-                <img src="../static/images/book1.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-
-            <div class="books-card">
-                <img src="../static/images/book1.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-
-            <div class="books-card">
-                <img src="../static/images/book1.jpg" alt="Book Cover">
-                <h3 class="book-title">Book Title</h3>
-                <p class="book-author">by Author Name</p>
-                <p class="book-price">$19.99</p>
-                <button class="btn add-to-cart">Add to Cart</button>
-                <button class="btn view-details" onclick="window.location.href='index.html#book'">View Details</button>
-            </div>
-            
+        <section class="books-grid" id="books-list">
         </section>
 
-    
-    
+        
     </main>
-
-
-    
 </section>
+<script src="../utils/constants.js"></script>
+<script src="../utils/rest-client.js"></script>
+<script src="../services/BookService.js"></script>
 
+<script>
+    BookService.init();
+</script>
 
