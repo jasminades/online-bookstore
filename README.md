@@ -56,11 +56,10 @@ Developed using **FlightPHP**, **JavaScript**, **Bootstrap**, and **MySQL**, thi
 
   * Admins: Full CRUD on all entities, user management, dashboard access
   * Users: Browse books, place orders, post reviews
-* **Book Management**: Admins can add, update, delete, and categorize books
+* **Book Management**: Admins can add, update and delete books
 * **Order Processing**: Tracks customer orders and their statuses
 * **Review System**: Users can submit and read reviews
 * **Authentication & Security**:
-
   * JWT login with role-based routing
   * Password hashing with `password_hash()`
   * Form validation and middleware checks
