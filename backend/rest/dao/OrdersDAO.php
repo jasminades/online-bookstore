@@ -11,26 +11,26 @@ class OrdersDao extends BaseDao
 
 
     public function create($user_id, $total_price, $status = 'pending', $book_id, $order_date, $quantity)
-{
-    try {
-        $order = [
-            'user_id' => $user_id,
-            'total_price' => $total_price,
-            'status' => $status,
-            'book_id' => $book_id,
-            'order_date' => $order_date,
-            'quantity' => $quantity,
-            'created_at' => date('Y-m-d H:i:s')
-        ];
-        return $this->insert("orders", $order);
-    } catch (PDOException $e) {
-        if ($e->getCode() == 23000) {
-            echo "Error: Duplicate entry.";
-        } else {
-            echo "Error: " . $e->getMessage();
+    {
+        try {
+            $order = [
+                'user_id' => $user_id,
+                'total_price' => $total_price,
+                'status' => $status,
+                'book_id' => $book_id,
+                'order_date' => $order_date,
+                'quantity' => $quantity,
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+            return $this->insert("orders", $order);
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                echo "Error: Duplicate entry.";
+            } else {
+                echo "Error: " . $e->getMessage();
+            }
         }
     }
-}
 
 
     public function get_all()

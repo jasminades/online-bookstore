@@ -16,21 +16,20 @@ class CategoriesService{
 
     public function getCategoryById($id){
         $category = $this->categoriesDAO->get_by_id($id);
-
         if(!$category){
             throw new Exception("Category not found");
         }
         return $category;
     }
 
-    private function validateCategoryData($data, $isUpdate = false) {
+    private function validateCategoryData($data, $isUpdate = false, $isDelete = false) {
         $errors = [];
 
-        if (empty($data['name'])) {
+        if (!$isDelete && empty($data['name'])) {
             $errors[] = "Category name is required";
         }
 
-        if ($isUpdate || isset($data['id'])) {
+        if ($isUpdate || $isDelete || isset($data['id'])) {
             $category = $this->categoriesDAO->get_by_id($data['id']);
             if (!$category) {
                 $errors[] = "Category not found for update or delete";
@@ -42,21 +41,21 @@ class CategoriesService{
         }
     }
 
+
     public function createCategory($data){
         $this->validateCategoryData($data);
-
         return $this->categoriesDAO->create($data['name']);
     }
 
 
     public function updateCategory($id, $data){
         $this->validateCategoryData($data, true);
-
         return $this->categoriesDAO->update($id, $data['name']);
     }
     
+
     public function deleteCategory($id){
-        $this->validateCategoryData(['id' => $id], true);
-        return $this->categoriesDAO->delete($id);
+        $this->validateCategoryData(['id' => $id], false, true); 
+        return $this->categoriesDAO->deleteCategory($id);
     }
 }

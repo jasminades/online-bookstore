@@ -1,54 +1,52 @@
 <?php
 
-class CategoriesDAO{
-    public static function create($name){
+require_once __DIR__ . "/BaseDao.php";
+
+class CategoriesDAO extends BaseDao {
+    public function __construct() {
+        parent::__construct("categories"); 
+    }
+
+    public function create($name){
         try{
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("INSERT INTO Categories (name) VALUES (?)");
+            $stmt = $this->connection->prepare("INSERT INTO categories (name) VALUES (?)");
             $stmt->execute([$name]);
-            return $conn->lastInsertId();
-        }catch (PDOException $e){
+            return $this->connection->lastInsertId();
+        } catch (PDOException $e){
             echo "Error: " . $e->getMessage();
         }
     }
 
-
-    public static function get_all(){
+    public function get_all(){
         try{
-            $conn = Database::getConnection();
-            $stmt = $conn->query("SELECT * FROM Categories");
+            $stmt = $this->connection->query("SELECT * FROM categories");
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }catch (PDOException $e){
+        } catch (PDOException $e){
             echo "Error: " . $e->getMessage();
         }
     }
 
-    
-    public static function get_by_id($id) {
+    public function get_by_id($id) {
         try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("SELECT * FROM Categories WHERE id = ?");
+            $stmt = $this->connection->prepare("SELECT * FROM categories WHERE id = ?");
             $stmt->execute([$id]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+        } catch (PDOException $e){
             echo "Error: " . $e->getMessage();
         }
     }
 
-
-    public static function update($id, $name) {
+    public function update($id, $name) {
         try {
-            $conn = Database::getConnection();
-            $stmt = $conn->prepare("UPDATE Categories SET name = ? WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE categories SET name = ? WHERE id = ?");
             $stmt->execute([$name, $id]);
-        } catch (PDOException $e) {
+        } catch (PDOException $e){
             echo "Error: " . $e->getMessage();
         }
     }
 
-
-    public function delete($id)
-    {
-        return $this->delete($id);
+    public function deleteCategory($id) {
+        return $this->delete($id); 
     }
 }
+
