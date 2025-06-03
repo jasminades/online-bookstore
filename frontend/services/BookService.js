@@ -116,7 +116,7 @@ document.getElementById("editBookForm").addEventListener("submit", function (e) 
   })
     .then(res => res.json())
     .then(data => {
-      alert(data.message || "Book updated.");
+      toastr.success(data.message || "Book updated successfully.");
       location.reload();
     })
     .catch(err => alert("Error updating book: " + err));
@@ -133,8 +133,12 @@ function deleteBook(bookId) {
     })
       .then(response => response.json())
       .then(result => {
-        alert(result.message || "Book deleted.");
-        location.reload();
+        toastr.success(result.message || "Book deleted successfully."); 
+        BookService.getAllBooks();
+
+        setTimeout(() => {
+          location.reload();
+        }, 300);
       })
       .catch(error => alert("Error: " + error));
   }
@@ -197,8 +201,12 @@ document.getElementById("addBookForm").addEventListener("submit", function (e) {
   })
     .then(res => res.json())
     .then(data => {
-      alert(data.message || "Book added.");
-      location.reload();
+      toastr.success("Book added!");
+      BookService.getAllBooks();
+
+      setTimeout(() => {
+        location.reload();
+      }, 300);
     })
     .catch(err => alert("Error adding book: " + err));
 });
