@@ -1,11 +1,39 @@
 document.getElementById('register-form').addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const data = {
-        first_name: document.getElementById('first_name').value.trim(),
-        last_name: document.getElementById('last_name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        password: document.getElementById('password').value
+      const firstName = document.getElementById('first_name').value.trim();
+      const lastName = document.getElementById('last_name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const responseText = document.getElementById('response');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+
+      if (!firstName || !lastName || !email || !password) {
+        responseText.innerText = 'All fields are required.';
+        responseText.style.color = 'red';
+        return;
+      }
+
+      if (!emailRegex.test(email)) {
+        responseText.innerText = 'Please enter a valid email.';
+        responseText.style.color = 'red';
+        return;
+      }
+
+      if (password.length < 6) {
+        responseText.innerText = 'Password must be at least 6 characters.';
+        responseText.style.color = 'red';
+        return;
+      }
+
+       const data = {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password
       };
 
       try {
@@ -14,8 +42,6 @@ document.getElementById('register-form').addEventListener('submit', async functi
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-
-        const responseText = document.getElementById('response');
 
         if (!res.ok) {
           const errText = await res.text();

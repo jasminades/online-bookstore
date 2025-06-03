@@ -1,10 +1,30 @@
 document.getElementById('login-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const data = {
-      email: document.getElementById('email').value.trim(),
-      password: document.getElementById('password').value
-    };
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const responseText = document.getElementById('response');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !password) {
+      responseText.innerText = 'All fields are required.';
+      responseText.style.color = 'red';
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      responseText.innerText = 'Please enter a valid email.';
+      responseText.style.color = 'red';
+      return;
+    }
+
+    if (password.length < 6) {
+      responseText.innerText = 'Password must be at least 6 characters.';
+      responseText.style.color = 'red';
+      return;
+    }
+
+    const data = { email, password };
 
     try {
       const res = await fetch('http://localhost:8000/backend/auth/login', {
@@ -12,8 +32,6 @@ document.getElementById('login-form').addEventListener('submit', async function 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
-
-      const responseText = document.getElementById('response');
 
       if (!res.ok) {
         const errText = await res.text();

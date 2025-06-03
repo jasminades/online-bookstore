@@ -21,7 +21,14 @@ const OrdersService = {
             <td>${order.id}</td>
             <td>${order.user_id}</td>
             <td>${order.total_price}</td>
-            <td>${this.statusToText(order.status)}</td>
+            <td>
+              <select onchange="OrdersService.updateStatus(${order.id}, this.value)" class="form-select form-select-sm">
+                <option value="0" ${order.status == 0 ? "selected" : ""}>Pending</option>
+                <option value="1" ${order.status == 1 ? "selected" : ""}>To Be Made</option>
+                <option value="2" ${order.status == 2 ? "selected" : ""}>Completed</option>
+                <option value="3" ${order.status == 3 ? "selected" : ""}>Paused</option>
+              </select>
+            </td>
             <td>${order.created_at}</td>
             <td>${order.book_id}</td>
             <td>
@@ -52,45 +59,66 @@ const OrdersService = {
     }
   },
 
-  statusToText: function (status) {
-    switch (status) {
-      case 0: return "Pending";
-      case 1: return "Shipped";
-      case 2: return "Delivered";
-      case 3: return "Cancelled";
-      default: return "Unknown";
-    }
+  updateStatus: function (orderId, newStatus) {
+    const token = localStorage.getItem("token");
+    fetch(`http://localhost:8000/backend/orders/${orderId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ status: parseInt(newStatus) })
+    })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message || "Status updated.");
+      })
+      .catch(err => alert("Error updating status: " + err));
   },
 
+
+   statusToText: function (status) {
+    const map = {
+      0: "Pending", 1: "To Be Made", 2: "Completed", 3: "Paused",
+      "pending": "Pending", "to_be_made": "To Be Made",
+      "completed": "Completed", "paused": "Paused"
+    };
+    return map[status] || "Unknown";
+  },
+
+
   bindFormSubmit: function () {
-    const form = document.getElementById("addOrderForm");
-    if (!form) return;
+  const form = document.getElementById("addOrderForm");
+  if (!form) return;
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-      const newOrder = {
-        id: document.getElementById("add-id").value,
-        user_id: document.getElementById("add-user_id").value,
-        book_id: parseFloat(document.getElementById("add-book_id").value)
-      };
+    const newOrder = {
+      id: parseInt(document.getElementById("add-id").value),
+      user_id: parseInt(document.getElementById("add-user_id").value),
+      total_price: parseFloat(document.getElementById("add-price").value),
+      status: 0,
+      created_at: document.getElementById("add-created_at").value,
+      book_id: parseInt(document.getElementById("add-book_id").value)
+    };
 
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-      fetch("http://localhost:8000/backend/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(newOrder)
-      })
-        .then(res => res.json())
-        .then(data => {
-          alert(data.message || "Order added.");
-          location.reload();
-        })
-        .catch(err => alert("Error adding order: " + err));
+    fetch("http://localhost:8000/backend/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(newOrder)
+    })
+    .then(response => response.json())
+    .then(result => {
+      alert(result.message || "Order created.");
+      location.reload();
+    })
+    .catch(error => alert("Error creating order: " + error));
     });
   }
 };

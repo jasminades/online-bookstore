@@ -137,33 +137,31 @@ Flight::route('POST /orders', function() use ($ordersService) {
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
- *             required={"total_amount"},
- *             @OA\Property(property="total_amount", type="number", format="float")
+ *             required={"id", "user_id", "total_price", "status", "created_at", "book_id"},
+ *             @OA\Property(property="id", type="integer", example=1),
+ *             @OA\Property(property="user_id", type="integer", example=10),
+ *             @OA\Property(property="total_price", type="number", format="float", example=99.99),
+ *             @OA\Property(property="status", type="integer", example=0),
+ *             @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-30T14:00:00Z"),
+ *             @OA\Property(property="book_id", type="integer", example=5)
  *         )
  *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Order updated successfully"
- *     ),
- *     @OA\Response(
- *         response=400,
- *         description="Invalid input"
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="Order not found"
- *     )
+ *     @OA\Response(response=200, description="Order updated successfully"),
+ *     @OA\Response(response=400, description="Invalid input"),
+ *     @OA\Response(response=404, description="Order not found")
  * )
  */
 Flight::route('PUT /orders/@id', function($id) use ($ordersService) {
     try {
-        $data = Flight::request()->data->getData();
-        $ordersService->updateOrder($id, $data);
+        $data = Flight::request()->data->getData(); 
+        $ordersService->updateOrder($id, $data);   
         Flight::json(["message" => "Order updated successfully"]);
     } catch (Exception $e) {
         Flight::json(["error" => $e->getMessage()], 400);
     }
 });
+
+
 
 /**
  * @OA\Delete(
