@@ -19,7 +19,7 @@
 
         <!-- pager -->
         <div class="d-flex justify-content-end mb-4">
-            <a class="btn-see-more" href="#books">See More→</a>
+            <a class="btn-see-more" href="index.html#books">See More→</a>
         </div>
 
         <!-- highlighted book -->
@@ -32,7 +32,13 @@
                     <p class="highlight-book-author">F. Scott Fitzgerald</p>
                     <p class="highlight-book-price">$22.99</p>
                     <p class="highlight-book-text">An unforgettable classic about the American Dream, wealth, love, and tragedy. "The Great Gatsby" remains a timeless masterpiece, a portrayal of the Roaring Twenties.</p>
-                    <a href="book-details.html" class="btn btn-primary">View Details</a>
+                    <button class="btn btn-primary" onclick="showBookDetails(
+                        'The Great Gatsby',
+                        'F. Scott Fitzgerald',
+                        '$22.99',
+                        '../static/images/highlightedbook.jpg',
+                        'An unforgettable classic about the American Dream, wealth, love, and tragedy. &quot;The Great Gatsby&quot; remains a timeless masterpiece, a portrayal of the Roaring Twenties.'
+                        )">View Details</button>
                 </div>
             </div>
         </div>
@@ -83,12 +89,39 @@
             </div>
         </div>   
     </div>
+
+    <div class="modal fade" id="bookDetailsModal" tabindex="-1" aria-labelledby="bookDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="bookDetailsModalLabel">Book Title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex">
+            <img id="modalBookImage" src="" alt="Book Cover" class="img-thumbnail me-3" style="max-width: 200px;">
+            <div>
+            <p><strong>Author:</strong> <span id="modalBookAuthor"></span></p>
+            <p><strong>Price:</strong> <span id="modalBookPrice"></span></p>
+            <p id="modalBookDescription"></p>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
 </section>
+
+
 
 <script src="../utils/constants.js"></script>
 <script src="../utils/rest-client.js"></script>
+<script src="../services/ShowBookDetails.js"></script>
 <script src="../services/FeaturedBooksService.js"></script>
+
 
 <script>
     FeaturedBooksService.init();
 </script>
+
+
