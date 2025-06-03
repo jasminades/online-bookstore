@@ -95,13 +95,15 @@ const OrdersService = {
     e.preventDefault();
 
     const newOrder = {
-      id: parseInt(document.getElementById("add-id").value),
       user_id: parseInt(document.getElementById("add-user_id").value),
       total_price: parseFloat(document.getElementById("add-price").value),
-      status: 0,
-      created_at: document.getElementById("add-created_at").value,
-      book_id: parseInt(document.getElementById("add-book_id").value)
+      status: document.getElementById("add-status").value,
+      book_id: parseInt(document.getElementById("add-book_id").value),
+      order_date: document.getElementById("add-order_date").value,
+      quantity: parseInt(document.getElementById("add-quantity").value)
     };
+
+
 
     const token = localStorage.getItem("token");
 
@@ -135,3 +137,4 @@ function closeLogoutModal() {
 function confirmLogout() {
   window.location.href = "login.html";
 }
+

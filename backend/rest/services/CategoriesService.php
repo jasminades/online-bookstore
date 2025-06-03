@@ -41,7 +41,6 @@ class CategoriesService{
             throw new Exception(implode(" ", $errors));
         }
     }
-    
 
     public function createCategory($data){
         $this->validateCategoryData($data);

@@ -7,6 +7,7 @@ require_once './rest/services/BaseService.php';
 class OrdersService extends BaseService
 {
     private $usersDAO;
+    private $ordersDAO;
 
     const STATUS_PENDING = 'pending';
     const STATUS_COMPLETED = 'completed';
@@ -14,8 +15,8 @@ class OrdersService extends BaseService
 
     public function __construct()
     {
-        $ordersDAO = new OrdersDAO();
-        parent::__construct($ordersDAO); 
+        $this->ordersDAO = new OrdersDAO(); 
+        parent::__construct($this->ordersDAO);
         $this->usersDAO = new UsersDAO();
     }
 
@@ -64,7 +65,15 @@ class OrdersService extends BaseService
     public function createOrder($data)
     {
         $this->validateOrderData($data);
-        return $this->add($data); 
+
+        return $this->ordersDAO->create(
+            $data['user_id'],
+            $data['total_price'],
+            $data['status'] ?? 'pending',
+            $data['book_id'],
+            $data['order_date'],
+            $data['quantity']
+        );
     }
 
     public function updateOrder($id, $data)
@@ -73,8 +82,7 @@ class OrdersService extends BaseService
         return $this->update($data, $id); 
     }
 
-    public function deleteOrder($id)
-    {
-        return $this->delete($id); 
+   public function deleteOrder($orderId) {
+        return $this->ordersDAO->delete($orderId);
     }
 }

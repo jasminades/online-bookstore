@@ -97,9 +97,13 @@ Flight::route('GET /orders/@id', function($id) use ($ordersService) {
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
- *             required={"user_id", "total_amount"},
+ *             required={"user_id", "total_price", "book_id", "order_date", "quantity"},
  *             @OA\Property(property="user_id", type="integer"),
- *             @OA\Property(property="total_amount", type="number", format="float")
+ *             @OA\Property(property="total_price", type="number", format="float"),
+ *             @OA\Property(property="book_id", type="integer"),
+ *             @OA\Property(property="order_date", type="string", format="date-time"),
+ *             @OA\Property(property="quantity", type="integer"),
+ *             @OA\Property(property="status", type="string", default="pending")
  *         )
  *     ),
  *     @OA\Response(
@@ -121,6 +125,7 @@ Flight::route('POST /orders', function() use ($ordersService) {
         Flight::json(["error" => $e->getMessage()], 400);
     }
 });
+
 
 /**
  * @OA\Put(
