@@ -1,55 +1,94 @@
 const ProfileService = {
-  init: function () {
-    const user = Utils.get_from_localstorage("user");
-    if (!user) {
+  user: null,
+
+  init: async function () {
+    this.user = Utils.get_from_localstorage("user");
+    if (!this.user) {
       window.location.href = "#login";
       return;
     }
 
-    this.loadUserData(user.id);
-    this.loadBooks(user.id);
+    await this.loadUserData(this.user.id);
+    await this.loadBooks(this.user.id);
+    this.setupEventListeners();
   },
 
-  loadUserData: function (id) {
-    RestClient.get("users/id/" + id, function (data) {
-      $("#nameSurname").text(data.name + " " + data.surname);
-      $("#username").text(data.username);
+  setupEventListeners: function () {
+    document.getElementById("profileImage").addEventListener("change", (event) => {
+      this.handleProfileImageChange(event);
+    });
+
+    document.querySelector(".edit-profile-btn").addEventListener("click", () => {
+      this.populateEditProfileForm();
+      this.openModal("editProfileModal");
+    });
+
+    document.querySelector(".logout-btn").addEventListener("click", () => this.openModal("logoutModal"));
+    document.querySelector("#logoutModal .confirm-btn").addEventListener("click", () => this.confirmLogout());
+    document.querySelector("#logoutModal .cancel-btn").addEventListener("click", () => this.closeModal("logoutModal"));
+    document.querySelector("#logoutModal .close").addEventListener("click", () => this.closeModal("logoutModal"));
+
+    document.querySelector("#editProfileModal .close").addEventListener("click", () => this.closeModal("editProfileModal"));
+    document.querySelector("#editProfileModal .cancel-btn").addEventListener("click", () => this.closeModal("editProfileModal"));
+
+    document.getElementById("editProfileForm").addEventListener("submit", (event) => this.saveProfileChanges(event));
+  },
+
+  openModal: function (modalId) {
+    document.getElementById(modalId).style.display = "block";
+  },
+
+  closeModal: function (modalId) {
+    document.getElementById(modalId).style.display = "none";
+  },
+
+  loadUserData: async function (id) {
+    try {
+      const data = await RestClient.getAsync("users/id/" + id);
+      this.user = { ...this.user, ...data };
+      Utils.set_to_localstorage("user", this.user);
+
+      $("#nameSurname").text(`${data.name} ${data.surname}`);
       $("#email").text(data.email);
 
-      let user = Utils.get_from_localstorage("user");
-      if (user && user.profileImage) {
-        $(".profile-img").attr("src", user.profileImage);
-      } else {
-        $(".profile-img").attr("src", "../static/images/logo.jpg"); 
-      }
-    });
+      const profileImage = this.user.profileImage || "../static/images/logo.jpg";
+      $(".profile-img").attr("src", profileImage);
+    } catch (error) {
+      console.error("Failed to load user data:", error);
+    }
   },
 
+  loadBooks: async function (userId) {
+    try {
+      const data = await RestClient.getAsync("books/all_profile");
+      const $booksCardsRow = $("#books-cards-row");
+      $booksCardsRow.empty();
 
-  loadBooks: function (id) {
-    RestClient.get("books/all_profile", function (data) {
-      let $booksCardsRow = $("#books-cards-row");
-      data.forEach(function (book) {
-        if (book.user_id == id) {
-          ProfileService.createCard(book).appendTo($booksCardsRow);
-        }
-      });
-    });
+      data
+        .filter((book) => book.user_id === userId)
+        .forEach((book) => {
+          this.createCard(book).appendTo($booksCardsRow);
+        });
+    } catch (error) {
+      console.error("Failed to load books:", error);
+    }
   },
 
   createCard: function (book) {
-    let badgeColor = book.gender === "male" ? "bg-blue" : "bg-pink";
-    let imagePath =
-      book.image_path !== 0
+    const badgeColor = book.gender === "male" ? "bg-primary" : "bg-danger";
+    const imagePath =
+      book.image_path && book.image_path !== 0
         ? book.image_path
         : "https://dummyimage.com/450x300/dee2e6/6c757d.jpg";
 
     return $(`
       <div class="col mb-5">
         <div class="card h-100">
-          <img class="card-img-top" src="${imagePath}" alt="..." />
+          <img class="card-img-top" src="${imagePath}" alt="${book.title}" />
           <div class="card-body p-3 position-relative">
-            <div class="badge badge-pill ${badgeColor} position-absolute" style="top: 0.6rem; right: 0.6rem"></div>
+            <div class="badge badge-pill ${badgeColor} position-absolute" style="top: 0.6rem; right: 0.6rem">
+              ${book.gender || ''}
+            </div>
             <div class="text-center">
               <h5 class="fw-bolder">${book.title}</h5>
               ${book.author}<br>
@@ -68,100 +107,69 @@ const ProfileService = {
         </div>
       </div>
     `);
+  },
+
+  handleProfileImageChange: function (event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      $(".profile-img").attr("src", e.target.result);
+      sessionStorage.setItem("profileImageData", e.target.result);
+    };
+    reader.readAsDataURL(file);
+  },
+
+  populateEditProfileForm: function () {
+    document.getElementById("name").value = this.user.name || "";
+    document.getElementById("email").value = this.user.email || "";
+  },
+
+  saveProfileChanges: function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+   
+    $("#nameSurname").text(name);
+    $("#email").text(email);
+
+    this.user.name = name;
+    this.user.email = email;
+
+    const profileImageData = sessionStorage.getItem("profileImageData");
+    if (profileImageData) {
+      this.user.profileImage = profileImageData;
+      $(".profile-img").attr("src", profileImageData);
+      sessionStorage.removeItem("profileImageData");
+    }
+
+    Utils.set_to_localstorage("user", this.user);
+
+
+    this.closeModal("editProfileModal");
+  },
+
+  confirmLogout: function () {
+    Utils.remove_from_localstorage("user");
+    window.location.href = "login.html";
   }
 };
 
 
-
-function openLogoutModal() {
-  document.getElementById("logoutModal").style.display = "block";
-}
-
-function closeLogoutModal() {
-  document.getElementById("logoutModal").style.display = "none";
-}
-
-function confirmLogout() {
-  Utils.remove_from_localstorage("user");
-  window.location.href = "login.html";
-}
-
-
-function openEditProfileModal() {
-  document.getElementById("editProfileModal").style.display = "block";
-}
-
-function closeEditProfileModal() {
-  document.getElementById("editProfileModal").style.display = "none";
-}
-
-function saveProfileChanges(event) {
-  event.preventDefault();
-
-  const name = document.getElementById("name").value;
-  const username = document.getElementById("username").value;
-  const email = document.getElementById("email").value;
-
-  document.querySelector("#nameSurname").innerText = name;
-  document.querySelector("#username").innerText = username;
-  document.querySelector("#email").innerText = email;
-
-  let user = Utils.get_from_localstorage("user") || {};
-
-  user.name = name;
-  user.username = username;
-  user.email = email;
-
-  const profileImageData = sessionStorage.getItem("profileImageData");
-  if (profileImageData) {
-    user.profileImage = profileImageData; 
-    document.querySelector(".profile-img").src = profileImageData; 
-    sessionStorage.removeItem("profileImageData");
-  }
-  Utils.set_to_localstorage("user", user);
-
-  closeEditProfileModal();
-}
-
-
-
-function loadWishlist() {
-    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    
-    BookService.getAllBooks().then(allBooks => {
-        const wishlistBooks = allBooks.filter(book => wishlist.includes(book.id.toString()));
-        
-        const wishlistContainer = document.getElementById("wishlist-container");
-        wishlistContainer.innerHTML = "";
-
-        wishlistBooks.forEach(book => {
-            const item = document.createElement("div");
-            item.className = "wishlist-book";
-            item.innerHTML = `
-                <h3>${book.title}</h3>
-                <p>${book.author}</p>
-                <p>$${book.price}</p>
-            `;
-            wishlistContainer.appendChild(item);
-        });
+RestClient.getAsync = function (url) {
+  return new Promise((resolve, reject) => {
+    this.get(url, (data) => {
+      resolve(data);
+    }, (error) => {
+      reject(error);
     });
-}
-
-document.getElementById("profileImage").addEventListener("change", function (event) {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      document.querySelector(".profile-img").src = e.target.result;
-      sessionStorage.setItem("profileImageData", e.target.result);
-    };
-    reader.readAsDataURL(file);
-  }
-});
+  });
+};
 
 
-$(document).ready(function () {
+$(document).ready(() => {
   ProfileService.init();
 });
-
-
