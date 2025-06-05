@@ -45,7 +45,7 @@ class ReviewsDao extends BaseDao
         );
     }
 
-    public function delete($id)
+    public function deleteReview($id)
     {
         return $this->delete($id);
     }

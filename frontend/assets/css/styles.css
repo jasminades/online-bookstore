@@ -484,8 +484,8 @@ footer .list-inline-item a:hover {
 }
 
 .books-card {
-    flex: 1 1 calc(33.33% - 20px); 
-    max-width: calc(33.33% - 20px);
+    flex: 1 1 calc(23.33% - 20px); 
+    max-width: calc(23.33% - 20px);
     background-color: #ded1c2;
     border-radius: 8px;
     gap:40px;
@@ -1314,3 +1314,39 @@ body {
     background-color: #203e5c;
     color: white;
 }
+.view-cart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;    
+    height: 70vh;          
+    background-color: #ded1c2;
+    margin-top:100px;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+#cart-heading {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#cart {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+#cart li {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #444;
+}
+

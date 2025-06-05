@@ -9,29 +9,9 @@
 </header>
 
 
-
-<div class="view-cart-container">
-    <a href="cart.html" class="btn view-cart">View Cart 🛒</a>
-</div>
-
 <section id="books">
     <main class="books-container">
-        <!-- sidebar for genres  -->
-        <aside class="genre-filter">
-            <h2>Filter by Genre</h2>
-            <ul>
-                <li><input type="checkbox" name="genre" value="fiction"> Fiction</li>
-                <li><input type="checkbox" name="genre" value="non-fiction"> Non-Fiction</li>
-                <li><input type="checkbox" name="genre" value="mystery"> Mystery</li>
-                <li><input type="checkbox" name="genre" value="fantasy"> Fantasy</li>
-                <li><input type="checkbox" name="genre" value="science-fiction"> Science Fiction</li>
-                <li><input type="checkbox" name="genre" value="romance"> Romance</li>
-                <li><input type="checkbox" name="genre" value="history"> History</li>
-            </ul>
-        </aside>
-
-
-       
+        
         <!-- books grid -->
         <section class="books-grid" id="books-list">
         </section>
@@ -49,14 +29,20 @@
     </div>
 
 
-        
     </main>
+     <div class="view-cart-container">
+    <h2 id="cart-heading">Cart</h2>
+    <ul id="cart"></ul>
+</div>
 </section>
+
 <script src="../utils/constants.js"></script>
 <script src="../utils/rest-client.js"></script>
 <script src="../services/BookService.js"></script>
+<script src="../services/Cart.js"></script>
 
 <script>
     BookService.init();
+    Cart.init();
 </script>
 

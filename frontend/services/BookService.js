@@ -27,22 +27,23 @@ let BookService = {
           <p class="book-author">by ${book.author}</p>
           <p class="book-category">Category: ${book.category_id || 'Unknown'}</p>
           <p class="book-price">$${parseFloat(book.price).toFixed(2)}</p>
-          <button class="btn add-to-cart" onclick="BookService.addToCart(${book.id})">Add to Cart</button>
+           <button class="btn add-to-cart" data-book-id="${book.id}">Add To Cart</button>
+
           <button class="btn view-details" data-book='${JSON.stringify(book)}'>View Details</button>
-          <button class="wishlist-btn" data-id="${book.id}" title="Add to Wishlist">🤍</button>
         </div>
       `;
       container.append(card);
+      
     });
 
-     document.querySelectorAll(".wishlist-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            const bookId = e.target.dataset.id;
-            toggleWishlist(bookId);
-            e.target.textContent = "❤️";
-        });
-    });
+    
+    $(".add-to-cart").off("click").on("click", function () {
+        const bookId = $(this).data("book-id");
+        const selectedBook = books.find(b => b.id === bookId);
+        Cart.addToCart(selectedBook);
+     });
 
+        
     $(".view-details").on("click", function () {
       const book = $(this).data("book");
 
@@ -67,10 +68,36 @@ let BookService = {
   },
 
   addToCart: function (bookId) {
-    console.log("Book added to cart:", bookId);
-    toastr.success("Book added to cart!");
+    let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+    if (cart[bookId]) {
+      cart[bookId].quantity += 1;
+    } else {
+      cart[bookId] = {
+        book_id: bookId,
+        quantity: 1
+      };
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Book added to cart!");
   }
 };
+
+function displayCart() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || {};
+  const cartList = document.getElementById("cart");
+  if (!cartList) return;
+
+  cartList.innerHTML = ""; 
+
+  Object.entries(cart).forEach(([bookId, item]) => {
+    const li = document.createElement("li");
+    li.textContent = `Book ID: ${item.book_id} | Quantity: ${item.quantity}`;
+    cartList.appendChild(li);
+  });
+}
+
 
 function openLogoutModal() {
   document.getElementById("logoutModal").style.display = "block";
@@ -213,16 +240,5 @@ document.getElementById("addBookForm").addEventListener("submit", function (e) {
     })
     .catch(err => alert("Error adding book: " + err));
 });
-
-function toggleWishlist(bookId) {
-    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    if (!wishlist.includes(bookId)) {
-        wishlist.push(bookId);
-    } else {
-        wishlist = wishlist.filter(id => id !== bookId);
-    }
-    localStorage.setItem("wishlist", JSON.stringify(wishlist));
-}
-
 
 
