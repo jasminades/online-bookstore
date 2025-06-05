@@ -167,7 +167,6 @@ Flight::route('PUT /orders/@id', function($id) use ($ordersService) {
 });
 
 
-
 /**
  * @OA\Delete(
  *     path="/orders/{id}",
@@ -176,7 +175,7 @@ Flight::route('PUT /orders/@id', function($id) use ($ordersService) {
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
- *         description="Order ID",
+ *         description="Order ID to delete",
  *         required=true,
  *         @OA\Schema(type="integer")
  *     ),
@@ -192,10 +191,13 @@ Flight::route('PUT /orders/@id', function($id) use ($ordersService) {
  */
 Flight::route('DELETE /orders/@id', function($id) use ($ordersService) {
     try {
-        $ordersService->deleteOrder($id);
-        Flight::json(["message" => "Order deleted successfully"]);
+        $deleted = $ordersService->deleteOrder($id);
+        if ($deleted > 0) {
+            Flight::json(["message" => "Order deleted successfully"]);
+        } else {
+            Flight::json(["error" => "Order not found"], 404);
+        }
     } catch (Exception $e) {
-        Flight::json(["error" => $e->getMessage()], 400);
+        Flight::json(["error" => $e->getMessage()], 500);
     }
 });
-

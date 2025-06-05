@@ -29,9 +29,18 @@ let BookService = {
           <p class="book-price">$${parseFloat(book.price).toFixed(2)}</p>
           <button class="btn add-to-cart" onclick="BookService.addToCart(${book.id})">Add to Cart</button>
           <button class="btn view-details" data-book='${JSON.stringify(book)}'>View Details</button>
+          <button class="wishlist-btn" data-id="${book.id}" title="Add to Wishlist">🤍</button>
         </div>
       `;
       container.append(card);
+    });
+
+     document.querySelectorAll(".wishlist-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const bookId = e.target.dataset.id;
+            toggleWishlist(bookId);
+            e.target.textContent = "❤️";
+        });
     });
 
     $(".view-details").on("click", function () {
@@ -62,12 +71,6 @@ let BookService = {
     toastr.success("Book added to cart!");
   }
 };
-
-$(document).ready(function () {
-  BookService.init();
-});
-
-
 
 function openLogoutModal() {
   document.getElementById("logoutModal").style.display = "block";
@@ -210,3 +213,16 @@ document.getElementById("addBookForm").addEventListener("submit", function (e) {
     })
     .catch(err => alert("Error adding book: " + err));
 });
+
+function toggleWishlist(bookId) {
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    if (!wishlist.includes(bookId)) {
+        wishlist.push(bookId);
+    } else {
+        wishlist = wishlist.filter(id => id !== bookId);
+    }
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+}
+
+
+
