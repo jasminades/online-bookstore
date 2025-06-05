@@ -1314,39 +1314,107 @@ body {
     background-color: #203e5c;
     color: white;
 }
-.view-cart-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;    
-    height: 70vh;          
-    background-color: #ded1c2;
-    margin-top:100px;
-    padding: 40px;
-    box-sizing: border-box;
+
+
+.books-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
-#cart-heading {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #333;
+#cart-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #203e5c;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+  z-index: 1001;
+}
+
+#cart-btn:hover {
+  background-color: #375a7d;
+}
+
+
+.cart-modal {
+  display: none; 
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  overflow: auto;
+  backdrop-filter: blur(4px);
+}
+
+.cart-modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 30px 40px;
+  border-radius: 10px;
+  max-width: 700px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.cart-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.cart-close:hover {
+  color: #000;
 }
 
 #cart {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    max-width: 400px;
+  list-style: none;
+  padding: 0;
+  width:600px;
+  max-height: 500px;
+  overflow-y: auto;
+  margin-top: 20px;
 }
 
 #cart li {
-    background-color: white;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #444;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+#cart li button.remove-btn {
+  background-color: #dc3545;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  padding: 5px 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#cart li button.remove-btn:hover {
+  background-color: #a71d2a;
+}
+
+
+#cart-empty-msg {
+  text-align: center;
+  margin-top: 30px;
+  color: #777;
+  font-style: italic;
+}

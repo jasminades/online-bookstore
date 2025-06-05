@@ -12,7 +12,6 @@
 <section id="books">
     <main class="books-container">
         
-        <!-- books grid -->
         <section class="books-grid" id="books-list">
         </section>
 
@@ -30,9 +29,20 @@
 
 
     </main>
-     <div class="view-cart-container">
-    <h2 id="cart-heading">Cart</h2>
+    
+<button id="cart-btn" title="View Cart">
+  🛒 Cart (<span id="cart-count">0</span>)
+</button>
+
+<div id="cart-modal" class="cart-modal">
+  <div class="cart-modal-content">
+    <span id="cart-close" class="cart-close">&times;</span>
+    <h2>Your Cart</h2>
     <ul id="cart"></ul>
+    <div id="cart-empty-msg">Your cart is empty.</div>
+  </div>
+</div>
+
 </div>
 </section>
 

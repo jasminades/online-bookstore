@@ -15,8 +15,16 @@ const ProfileService = {
       $("#nameSurname").text(data.name + " " + data.surname);
       $("#username").text(data.username);
       $("#email").text(data.email);
+
+      let user = Utils.get_from_localstorage("user");
+      if (user && user.profileImage) {
+        $(".profile-img").attr("src", user.profileImage);
+      } else {
+        $(".profile-img").attr("src", "../static/images/logo.jpg"); 
+      }
     });
   },
+
 
   loadBooks: function (id) {
     RestClient.get("books/all_profile", function (data) {
@@ -98,14 +106,23 @@ function saveProfileChanges(event) {
   document.querySelector("#username").innerText = username;
   document.querySelector("#email").innerText = email;
 
-  let user = Utils.get_from_localstorage("user");
+  let user = Utils.get_from_localstorage("user") || {};
+
   user.name = name;
   user.username = username;
   user.email = email;
+
+  const profileImageData = sessionStorage.getItem("profileImageData");
+  if (profileImageData) {
+    user.profileImage = profileImageData; 
+    document.querySelector(".profile-img").src = profileImageData; 
+    sessionStorage.removeItem("profileImageData");
+  }
   Utils.set_to_localstorage("user", user);
 
   closeEditProfileModal();
 }
+
 
 
 function loadWishlist() {
@@ -129,6 +146,18 @@ function loadWishlist() {
         });
     });
 }
+
+document.getElementById("profileImage").addEventListener("change", function (event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.querySelector(".profile-img").src = e.target.result;
+      sessionStorage.setItem("profileImageData", e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+});
 
 
 $(document).ready(function () {

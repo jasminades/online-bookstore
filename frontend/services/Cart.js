@@ -1,6 +1,7 @@
 const Cart = {
-  init: function () {
-    this.cartKey = "cart";
+  init: function(userId) {
+    this.userId = userId;
+    this.cartKey = `cart_${this.userId}`;
     this.loadCart();
     this.renderCart();
   },
@@ -56,7 +57,7 @@ const Cart = {
       cartList.appendChild(listItem);
     });
 
-    
+
     document.querySelectorAll(".remove-btn").forEach((button) => {
       button.addEventListener("click", (e) => {
         const bookId = button.getAttribute("data-id");
@@ -97,6 +98,49 @@ const Cart = {
 }
 
 };
+
+
+const cartBtn = document.getElementById('cart-btn');
+const cartModal = document.getElementById('cart-modal');
+const cartClose = document.getElementById('cart-close');
+const cartEmptyMsg = document.getElementById('cart-empty-msg');
+const cartList = document.getElementById('cart');
+
+cartBtn.addEventListener('click', () => {
+  cartModal.style.display = 'block';
+});
+
+cartClose.addEventListener('click', () => {
+  cartModal.style.display = 'none';
+});
+
+
+window.addEventListener('click', (e) => {
+  if (e.target === cartModal) {
+    cartModal.style.display = 'none';
+  }
+});
+
+function updateCartCount() {
+  const cart = Cart.cart || {};
+  const count = Object.values(cart).reduce((acc, item) => acc + item.quantity, 0);
+  document.getElementById('cart-count').textContent = count;
+}
+
+
+const originalRenderCart = Cart.renderCart.bind(Cart);
+Cart.renderCart = function() {
+  originalRenderCart();
+  if (cartList.children.length === 0) {
+    cartEmptyMsg.style.display = 'block';
+  } else {
+    cartEmptyMsg.style.display = 'none';
+  }
+  updateCartCount();
+};
+
+updateCartCount();
+
 
 Cart.init();
 Cart.cleanInvalidItems();

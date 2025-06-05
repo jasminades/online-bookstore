@@ -13,9 +13,8 @@
         <aside class="profile-info">
             <img src="../static/images/logo.jpg" alt="Profile Picture" class="profile-img">
             <div class="profile-details">
-                <h2 id="nameSurname">John Doe</h2>
-                <p>Username: <span id="username">johndoe123</span></p>
-                <p>Email Address: <span id="email">johndoe@example.com</span></p>
+                <h2 id="nameSurname">User User</h2>
+                <p>Email Address: <span id="email">user@user.com</span></p>
                 <button class="btn edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
                 <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
 
@@ -56,20 +55,24 @@
         <span class="close" onclick="closeEditProfileModal()">&times;</span>
         <h3>Edit Profile</h3>
         <form id="editProfileForm" onsubmit="saveProfileChanges(event)">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" value="John Doe" required>
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" value="John Doe" required>
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" value="johndoe123" required>
+    <label for="username">Username:</label>
+    <input type="text" id="username" value="johndoe123" required>
 
-            <label for="email">Email Address:</label>
-            <input type="email" id="email" value="johndoe@example.com" required>
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" value="johndoe@example.com" required>
 
-            <div style="margin-top: 15px;">
-                <button class="btn confirm-btn" type="submit">Save</button>
-                <button class="btn cancel-btn" type="button" onclick="closeEditProfileModal()">Cancel</button>
-            </div>
-        </form>
+    <label for="profileImage">Profile Picture:</label>
+    <input type="file" id="profileImage" accept="image/*">
+
+    <div style="margin-top: 15px;">
+        <button class="btn confirm-btn" type="submit">Save</button>
+        <button class="btn cancel-btn" type="button" onclick="closeEditProfileModal()">Cancel</button>
+    </div>
+</form>
+
     </div>
 </div>
 
