@@ -30,9 +30,6 @@ const UserService = {
             <td>${user.email}</td>
             <td>${user.role}</td>
             <td>${user.created_at}</td>
-            <td>
-              <button class="btn btn-sm btn-danger" onclick="UserService.deleteUser(${user.id})">Delete</button>
-            </td>
           `;
           userList.appendChild(row);
         });
@@ -40,22 +37,7 @@ const UserService = {
       .catch(error => console.error("Error loading users:", error));
   },
 
-  deleteUser: function (userId) {
-    if (confirm("Are you sure you want to delete this user?")) {
-      fetch(`http://localhost:8000/backend/users/${userId}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${this.token}`
-        }
-      })
-        .then(response => response.json())
-        .then(result => {
-          alert(result.message || "User deleted.");
-          this.loadUsers();
-        })
-        .catch(error => alert("Error: " + error));
-    }
-  }
+ 
 };
 
 

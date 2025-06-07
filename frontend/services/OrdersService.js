@@ -21,6 +21,7 @@ const OrdersService = {
             <td>${order.id}</td>
             <td>${order.user_id}</td>
             <td>${order.total_price}</td>
+            <td>${order.quantity}</td>
             <td>
               <select onchange="OrdersService.updateStatus(${order.id}, this.value)" class="form-select form-select-sm">
                 <option value="0" ${order.status == 0 ? "selected" : ""}>Pending</option>
