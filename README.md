@@ -6,7 +6,6 @@
 
 **Book & Beyond** is a full-stack web application developed as a course project. It represents a modern online bookstore, allowing users to browse, explore, and purchase books, while administrators manage content and users through a secure admin panel. The system includes role-based access control, secure login, dynamic frontend components, and a RESTful backend architecture.
 
-Developed using **FlightPHP**, **JavaScript**, **Bootstrap**, and **MySQL**, this project showcases clean separation of concerns through service-based backend logic, dynamic routing, and user-friendly interfaces.
 
 ---
 
