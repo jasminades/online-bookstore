@@ -128,7 +128,13 @@ RestClient.getAsync = function (url) {
   });
 };
 
+function openEditProfileModal() {
+  ProfileService.populateEditProfileForm();
+  ProfileService.openModal("editProfileModal");
+}
+
 
 $(document).ready(() => {
   ProfileService.init();
+  ProfileService.setupEventListeners();
 });

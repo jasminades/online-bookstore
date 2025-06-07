@@ -15,7 +15,6 @@ body {
     text-align: center;
 }
 
-/* navigation */
 #mainNav {
     background-color: #203e5c; 
     width: 100%;
@@ -57,7 +56,6 @@ body {
     background-color: #555;
 }
 
-/* page header */
 .masthead {
     background-size: cover;
     background-position: center;
@@ -78,7 +76,6 @@ body {
     color: #534028;
 }
 
-/* main container */
 .container {
     width: 90%;
     max-width: 1200px;
@@ -86,7 +83,7 @@ body {
     padding: 30px 0;
 }
 
-/* section titles */
+
 .section-title {
     text-align: center;
     font-size: 36px;
@@ -94,7 +91,7 @@ body {
     color: #534028;
 }
 
-/* book grid */
+
 .book-grid {
     display: flex;
     justify-content: center;
@@ -140,7 +137,7 @@ body {
 }
 
 
-/* buttons */
+
 .btn {
     background-color: #203e5c;
     color: white;
@@ -175,7 +172,6 @@ body {
     background-color: #112b46;
 }
 
-/* highlighted book */
 .highlighted-book {
     font-size: 2rem; 
     font-weight: bold;
@@ -240,7 +236,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* reviews */
+
 .review-container {
     display: flex;
     flex-wrap: wrap;
@@ -278,7 +274,7 @@ body {
     color: #555;
 }
 
-/* page footer */
+
 footer {
     background-color: #203e5c;
     color: white;
@@ -303,7 +299,7 @@ footer .list-inline-item a:hover {
     color: #f8f9fa;
 }
 
-/* responsive design */
+
 @media (max-width: 768px) {
     .navbar-menu {
         flex-direction: column;
@@ -432,7 +428,7 @@ footer .list-inline-item a:hover {
     color: #666;
 }
 
-/* responsive - about page */
+
 @media (max-width: 768px) {
     .about-box {
         flex: 1 1 100%;
@@ -442,7 +438,7 @@ footer .list-inline-item a:hover {
 
 
 
-/* books */
+
 .books-container {
     display: flex;
     justify-content: space-between;
@@ -569,7 +565,7 @@ footer .list-inline-item a:hover {
 }
 
 
-/* profile */
+
 .profile-container {
     display: flex;
     align-items: flex-start;
@@ -676,10 +672,6 @@ footer .list-inline-item a:hover {
 }
 
 
-
-
-
-/* register */ 
 .register-container {
     max-width: 500px;
     margin: 40px auto;
@@ -760,8 +752,6 @@ footer .list-inline-item a:hover {
 }
 
 
-
-/* login */
 .login-container {
     max-width: 450px;
     margin: auto;
@@ -809,9 +799,6 @@ footer .list-inline-item a:hover {
     text-decoration: underline;
 }
 
-
-
-/* cart */ 
 
 #cart {
     background-color: #f8f9fa;
@@ -908,7 +895,7 @@ footer .list-inline-item a:hover {
     margin-top: 10px;
 }
 
-/* subtotal, tax, total section */
+
 .status {
     text-align: right;
 }
@@ -979,8 +966,6 @@ footer .list-inline-item a:hover {
 }
 
 
-/* single book */
-
 .single-book-container {
     width: 100%;
     display: flex;
@@ -1050,8 +1035,6 @@ footer .list-inline-item a:hover {
 }
 
 
-
-/* admin dashboard */
 * {
     margin: 0;
     padding: 0;
@@ -1449,4 +1432,138 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     width: 100%;
     max-width: 500px;
+}
+
+.modal-edit {
+  display: none; 
+  position: fixed; 
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.4);
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.modal-edit {
+  display: none; 
+  position: fixed;
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); 
+  font-family: Arial, sans-serif;
+}
+
+.modal-edit-content {
+  background-color: #fff;
+  margin: 10% auto; 
+  padding: 20px 30px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.modal-edit-content .close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-edit-content .close:hover {
+  color: #000;
+}
+
+.modal-edit-content h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal-edit-content label {
+  display: block;
+  margin-bottom: 6px;
+  color: #555;
+  font-weight: 500;
+}
+
+.modal-edit-content input[type="text"],
+.modal-edit-content input[type="email"],
+.modal-edit-content input[type="file"] {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.modal-edit-content input[type="text"]:focus,
+.modal-edit-content input[type="email"]:focus,
+.modal-edit-content input[type="file"]:focus {
+  border-color: #125194;
+  outline: none;
+}
+
+.modal-edit-content div {
+  text-align: right;
+}
+
+.modal-edit-content .btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-edit-content .confirm-btn {
+  background-color: #08407d;
+  color: white;
+}
+
+.modal-edit-content .confirm-btn:hover {
+  background-color: #1f65b0;
+}
+
+.modal-edit-content .cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-edit-content .cancel-btn:hover {
+  background-color: #565e64;
 }

@@ -142,12 +142,7 @@ Flight::route('GET /users/@id', function($id) {
  * )
  */
 Flight::route('PUT /users/@id', function($id) use ($usersService) {
-     $auth = new AuthMiddleware();
-    $headers = getallheaders();
-    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
-
-    $auth->verifyToken($token); 
-    $auth->authorizeRole('admin'); 
+    
 
     $data = Flight::request()->data->getData();
     try {
