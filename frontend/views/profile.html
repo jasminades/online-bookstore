@@ -13,8 +13,8 @@
         <aside class="profile-info">
             <img src="../static/images/logo.jpg" alt="Profile Picture" class="profile-img">
             <div class="profile-details">
-                <h2 id="nameSurname">User User</h2>
-                <p>Email Address: <span id="email">user@user.com</span></p>
+                <h2 id="nameSurname"></h2>
+                <p>Email Address: <span id="email"></span></p>
                 <button class="btn edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
                 <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
 
@@ -35,6 +35,11 @@
 
      <section id="review-history" class="profile-section">
     <h3>Review History</h3>
+    <div class="container mt-3">
+  <div class="row" id="user-reviews"></div>
+</div>
+
+
 
  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addReviewModal">
         Add Review
@@ -69,8 +74,6 @@
     </div>
   </div>
   
-
-
     <div id="logoutModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeLogoutModal()">&times;</span>

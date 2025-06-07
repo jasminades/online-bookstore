@@ -85,4 +85,13 @@ class ReviewsService {
         $this->reviewsDAO->delete($id);
         return ["message" => "Review deleted successfully"];
     }
+
+   public function getAllByUser($user_id) {
+        $reviews = $this->reviewsDAO->getAllByUser($user_id);
+        if (!$reviews) {
+            throw new Exception("No reviews found for this user.");
+        }
+        return $reviews;
+    }
+
 }

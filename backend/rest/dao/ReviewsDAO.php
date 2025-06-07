@@ -51,4 +51,10 @@ class ReviewsDao extends BaseDao
     {
         return $this->delete($id);
     }
+
+    public function getAllByUser($user_id)
+    {
+        return $this->query("SELECT * FROM reviews WHERE user_id = :user_id", ['user_id' => $user_id]);
+    }
+
 }

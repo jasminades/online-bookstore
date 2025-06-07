@@ -180,3 +180,33 @@ Flight::route('DELETE /reviews/@id', function($id) use ($reviewsService) {
     }
 });
 
+/**
+ * @OA\Get(
+ *     path="/reviews/user/{user_id}",
+ *     summary="Get all reviews by a user",
+ *     tags={"Reviews"},
+ *     @OA\Parameter(
+ *         name="user_id",
+ *         in="path",
+ *         description="User ID",
+ *         required=true,
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of reviews by user",
+ *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Review"))
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Error fetching reviews"
+ *     )
+ * )
+ */
+Flight::route('GET /reviews/user/@user_id', function($user_id) use ($reviewsService) {
+    try {
+        Flight::json($reviewsService->getAllByUser($user_id));
+    } catch (Exception $e) {
+        Flight::json(["error" => $e->getMessage()], 400);
+    }
+});

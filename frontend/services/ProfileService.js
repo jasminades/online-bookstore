@@ -1,16 +1,22 @@
 const ProfileService = {
   user: null,
 
-  init: async function () {
-    this.user = Utils.get_from_localstorage("user");
+  init: function () {
+    this.user = Utils.get_from_localstorage("user");  
+
     if (!this.user) {
-      window.location.href = "#login";
+      console.error("User not found in localStorage.");
       return;
     }
 
-    await this.loadUserData(this.user.id);
-    this.setupEventListeners();
+    $('#profile_email').html(this.user.email);
+    $('#profile_username').html(this.user.username);
+
+    $("#nameSurname").text(`${this.user.first_name || ""} ${this.user.last_name || ""}`);
+    $("#email").text(this.user.email || "");
   },
+
+
 
   setupEventListeners: function () {
     document.getElementById("profileImage").addEventListener("change", (event) => {
@@ -73,35 +79,37 @@ const ProfileService = {
   },
 
   populateEditProfileForm: function () {
-    document.getElementById("name").value = this.user.name || "";
+    document.getElementById("name").value = this.user.first_name || "";
+    document.getElementById("last_name").value = this.user.last_name || "";
     document.getElementById("email").value = this.user.email || "";
   },
 
+
   saveProfileChanges: function (event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
+  const firstName = document.getElementById("name").value.trim();
+  const lastName = document.getElementById("last_name").value.trim();
+  const email = document.getElementById("email").value.trim();
 
-   
-    $("#nameSurname").text(name);
-    $("#email").text(email);
+  $("#nameSurname").text(`${firstName} ${lastName}`);
+  $("#email").text(email);
 
-    this.user.name = name;
-    this.user.email = email;
+  this.user.first_name = firstName;
+  this.user.last_name = lastName;
+  this.user.email = email;
 
-    const profileImageData = sessionStorage.getItem("profileImageData");
-    if (profileImageData) {
-      this.user.profileImage = profileImageData;
-      $(".profile-img").attr("src", profileImageData);
-      sessionStorage.removeItem("profileImageData");
-    }
+  const profileImageData = sessionStorage.getItem("profileImageData");
+  if (profileImageData) {
+    this.user.profileImage = profileImageData;
+    $(".profile-img").attr("src", profileImageData);
+    sessionStorage.removeItem("profileImageData");
+  }
 
-    Utils.set_to_localstorage("user", this.user);
-
-
-    this.closeModal("editProfileModal");
+  Utils.set_to_localstorage("user", this.user);
+  this.closeModal("editProfileModal");
   },
+
 
   confirmLogout: function () {
     Utils.remove_from_localstorage("user");
