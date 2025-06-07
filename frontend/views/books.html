@@ -26,8 +26,6 @@
         <p id="single-book-price"></p>
     </div>
     </div>
-
-
     </main>
     
 <button id="cart-btn" title="View Cart">
@@ -40,6 +38,10 @@
     <h2>Your Cart</h2>
     <ul id="cart"></ul>
     <div id="cart-empty-msg">Your cart is empty.</div>
+    <button id="purchase-btn" class="btn btn-success mb-3">
+    Purchase
+    </button>
+
   </div>
 </div>
 
@@ -53,6 +55,14 @@
 
 <script>
     BookService.init();
-    Cart.init();
+
+    const user_id = localStorage.getItem('user_id');
+    if (!user_id) {
+        toastr.error("User is not logged in.");
+        updateCartUI();
+    } else {
+        Cart.init(user_id);
+        Cart.cleanInvalidItems();
+    }
 </script>
 

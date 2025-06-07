@@ -75,11 +75,85 @@ const Cart = {
     }
   },
 
+purchaseItems: function () {
+  const token = localStorage.getItem("token");
+  const userId = this.userId;
+
+  if (!token || !userId) {
+    toastr.error("User not authenticated.");
+    return;
+  }
+
+  function toMySQLDateTime(date) {
+    const d = new Date(date);
+    return d.getFullYear() + "-" +
+      String(d.getMonth() + 1).padStart(2, "0") + "-" +
+      String(d.getDate()).padStart(2, "0") + " " +
+      String(d.getHours()).padStart(2, "0") + ":" +
+      String(d.getMinutes()).padStart(2, "0") + ":" +
+      String(d.getSeconds()).padStart(2, "0");
+  }
+
+  const orders = Object.values(this.cart).map(item => ({
+    user_id: userId,
+    total_price: (item.quantity * item.price),
+    status: "pending",  
+    book_id: parseInt(item.id),
+    order_date: toMySQLDateTime(new Date()),  
+    quantity: item.quantity
+  }));
+
+  if (orders.length === 0) {
+    toastr.info("Cart is empty.");
+    return;
+  }
+
+  Promise.all(
+    orders.map(order =>
+      fetch("http://localhost:8000/backend/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(order)
+      })
+    )
+  )
+  .then(async responses => {
+    for (const res of responses) {
+      const text = await res.text();
+      console.log('Response text:', text);
+
+      try {
+        const json = JSON.parse(text);
+        console.log('Parsed JSON:', json);
+      } catch (e) {
+        console.error('Failed to parse JSON:', e, 'Response text:', text);
+        throw e; 
+      }
+    }
+  })
+  .then(() => {
+    toastr.success("Purchase successful!");
+    this.clearCart();
+  })
+  .catch(error => {
+    console.error("Error placing orders:", error);
+    toastr.error("An error occurred during purchase.");
+  });
+},
+
+
   clearCart: function () {
     this.cart = {};
     this.saveCart();
     this.renderCart();
   },
+  getItems: function() {
+  return Object.values(this.cart);
+}
+,
 
   cleanInvalidItems: function () {
   let changed = false;
@@ -98,7 +172,6 @@ const Cart = {
 }
 
 };
-
 
 const cartBtn = document.getElementById('cart-btn');
 const cartModal = document.getElementById('cart-modal');
@@ -141,6 +214,13 @@ Cart.renderCart = function() {
 
 updateCartCount();
 
+function updateCartUI() {
+    document.getElementById('cart-count').textContent = 0;
+    document.getElementById('cart').innerHTML = '';
+    document.getElementById('cart-empty-msg').style.display = 'block';
+}
 
-Cart.init();
-Cart.cleanInvalidItems();
+
+document.getElementById("purchase-btn").addEventListener("click", () => {
+  Cart.purchaseItems();
+});
