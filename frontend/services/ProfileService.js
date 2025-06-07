@@ -9,7 +9,6 @@ const ProfileService = {
     }
 
     await this.loadUserData(this.user.id);
-    await this.loadBooks(this.user.id);
     this.setupEventListeners();
   },
 
@@ -44,11 +43,11 @@ const ProfileService = {
 
   loadUserData: async function (id) {
     try {
-      const data = await RestClient.getAsync("users/id/" + id);
+      const data = await RestClient.getAsync("/users/" + id);
       this.user = { ...this.user, ...data };
       Utils.set_to_localstorage("user", this.user);
 
-      $("#nameSurname").text(`${data.name} ${data.surname}`);
+      $("#nameSurname").text(`${data.first_name} ${data.last_name}`);
       $("#email").text(data.email);
 
       const profileImage = this.user.profileImage || "../static/images/logo.jpg";
@@ -58,56 +57,8 @@ const ProfileService = {
     }
   },
 
-  loadBooks: async function (userId) {
-    try {
-      const data = await RestClient.getAsync("books/all_profile");
-      const $booksCardsRow = $("#books-cards-row");
-      $booksCardsRow.empty();
+  
 
-      data
-        .filter((book) => book.user_id === userId)
-        .forEach((book) => {
-          this.createCard(book).appendTo($booksCardsRow);
-        });
-    } catch (error) {
-      console.error("Failed to load books:", error);
-    }
-  },
-
-  createCard: function (book) {
-    const badgeColor = book.gender === "male" ? "bg-primary" : "bg-danger";
-    const imagePath =
-      book.image_path && book.image_path !== 0
-        ? book.image_path
-        : "https://dummyimage.com/450x300/dee2e6/6c757d.jpg";
-
-    return $(`
-      <div class="col mb-5">
-        <div class="card h-100">
-          <img class="card-img-top" src="${imagePath}" alt="${book.title}" />
-          <div class="card-body p-3 position-relative">
-            <div class="badge badge-pill ${badgeColor} position-absolute" style="top: 0.6rem; right: 0.6rem">
-              ${book.gender || ''}
-            </div>
-            <div class="text-center">
-              <h5 class="fw-bolder">${book.title}</h5>
-              ${book.author}<br>
-              $${parseFloat(book.price).toFixed(2)}
-            </div>
-          </div>
-          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="row mb-2">
-              <div class="col text-center">
-                <div class="d-grid gap-2">
-                  <a class="btn btn-outline-dark" href="?id=${book.id}#itempage">View</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `);
-  },
 
   handleProfileImageChange: function (event) {
     const file = event.target.files[0];

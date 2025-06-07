@@ -4,7 +4,7 @@ require_once __DIR__ . './../../config.php';
 
 class BaseDao {
     protected $connection;
-    private $table;
+    protected $table;
 
     public function __construct($table)
     {
@@ -62,6 +62,7 @@ class BaseDao {
         $statement->execute($entity);
         $entity['id'] = $this->connection->lastInsertId();
         return $entity;
+
     }
 
     public function delete($id) {

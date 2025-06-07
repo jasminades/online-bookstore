@@ -15,17 +15,19 @@ class ReviewsDao extends BaseDao
     }
 
 
-    public function create($book_id, $user_id, $rating, $comment)
-    {
+    public function create($book_id, $user_id, $rating, $comment) {
         $review = [
-            'book_id' => $book_id,
-            'user_id' => $user_id,
-            'rating' => $rating,
-            'comment' => $comment,
-            'created_at' => date('Y-m-d H:i:s')
+            "book_id" => $book_id,
+            "user_id" => $user_id,
+            "rating" => $rating,
+            "comment" => $comment,
+            "created_at" => date('Y-m-d H:i:s')
         ];
-        return $this->insert("reviews", $review);
+
+        return $this->insert($this->table, $review);
     }
+
+
 
     public function getAllByBook($book_id)
     {

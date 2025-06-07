@@ -17,12 +17,7 @@ $reviewsService = new ReviewsService();
  * )
  */
 Flight::route('GET /reviews', function() use ($reviewsService) {
-    $auth = new AuthMiddleware();
-    $headers = getallheaders();
-    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
-
-    $auth->verifyToken($token); 
-    $auth->authorizeRole('admin');
+   
 
     try {
         Flight::json($reviewsService->getAll());
@@ -95,22 +90,15 @@ Flight::route('GET /reviews/@book_id', function($book_id) use ($reviewsService) 
  *     )
  * )
  */
-Flight::route('POST /reviews', function() use ($reviewsService) {
-    $auth = new AuthMiddleware();
-    $headers = getallheaders();
-    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
 
-    $auth->verifyToken($token); 
-    $auth->authorizeRole('admin', 'customer');
-
-    try {
-        $data = Flight::request()->data->getData();
-        $review_id = $reviewsService->createReview($data);
-        Flight::json(["message" => "Review created successfully", "review_id" => $review_id]);
-    } catch (Exception $e) {
-        Flight::json(["error" => $e->getMessage()], 400);
-    }
+Flight::route('POST /reviews', function() {
+    $data = Flight::request()->data->getData();
+    $review = Flight::reviewsService()->createReview($data);
+    Flight::json($review);
 });
+
+
+
 
 /**
  * @OA\Put(
@@ -127,8 +115,8 @@ Flight::route('POST /reviews', function() use ($reviewsService) {
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
- *             required={"content", "rating"},
- *             @OA\Property(property="content", type="string"),
+ *             required={"comment", "rating"},
+ *             @OA\Property(property="comment", type="string"),
  *             @OA\Property(property="rating", type="integer")
  *         )
  *     ),
@@ -147,13 +135,6 @@ Flight::route('POST /reviews', function() use ($reviewsService) {
  * )
  */
 Flight::route('PUT /reviews/@id', function($id) use ($reviewsService) {
-    $auth = new AuthMiddleware();
-    $headers = getallheaders();
-    $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
-
-    $auth->verifyToken($token); 
-    $auth->authorizeRole('admin', 'customer');
-    
     try {
         $data = Flight::request()->data->getData();
         Flight::json($reviewsService->updateReview($id, $data));

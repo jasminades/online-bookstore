@@ -41,6 +41,8 @@ document.getElementById('login-form').addEventListener('submit', async function 
         const result = await res.json();
 
         localStorage.setItem('token', result.data.token);
+        localStorage.setItem('user_id', result.data.id);
+        
 
         responseText.innerText = 'Success: ' + result.message;
         responseText.style.color = 'green';

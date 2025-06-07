@@ -33,12 +33,42 @@
 
            
 
-            <section id="review-history" class="profile-section">
-                <h3>Review History</h3>
-                <p>You haven't left any reviews yet.</p>
-            </section>
-        </div>
+     <section id="review-history" class="profile-section">
+    <h3>Review History</h3>
+
+ <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+        Add Review
+    </button>
+
+    <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" id="addReviewForm">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addReviewModalLabel">Add New Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-book_id" class="form-label">Book ID</label>
+              <input type="text" class="form-control" id="add-book_id" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-rating" class="form-label">Rating</label>
+              <input type="text" class="form-control" id="add-rating" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-comment" class="form-label">Comment</label>
+              <input type="text" class="form-control" id="add-comment" required>
+            </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Add Review</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+  
 
 
     <div id="logoutModal" class="modal">
@@ -86,6 +116,7 @@
 <script src="../utils/constants.js"></script>
 <script src="../utils/utils.js"></script>
 <script src="../services/ProfileService.js"></script>
-<script src="../services/BookService.js"></script>
+<!-- <script src="../services/BookService.js"></script> -->
+<script src="../services/UserReviewsService.js"></script>
 
 

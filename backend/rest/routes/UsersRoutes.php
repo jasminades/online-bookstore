@@ -61,12 +61,12 @@ Flight::route('GET /users', function() {
  */
 
 Flight::route('GET /users/@id', function($id) {
-     $auth = new AuthMiddleware();
+    /*  $auth = new AuthMiddleware();
     $headers = getallheaders();
     $token = str_replace('Bearer ', '', $headers['Authorization'] ?? '');
 
     $auth->verifyToken($token); 
-    $auth->authorizeRole('admin'); 
+    $auth->authorizeRole('admin', 'customer');  */
     Flight::json(Flight::usersService()->get_by_id($id));
 });
 

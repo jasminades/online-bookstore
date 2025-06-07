@@ -43,9 +43,10 @@ class ReviewsService {
             $errors[] = "Invalid or non-existent book.";
         }
 
-        if (!isset($data['user_id']) || !$this->usersDAO->get_by_id($data['user_id'])) { 
+        if (!isset($data['user_id']) || !is_array($this->usersDAO->get_by_id($data['user_id']))) {
             $errors[] = "Invalid or non-existent user.";
         }
+
 
         if (!isset($data['rating']) || !is_numeric($data['rating']) || $data['rating'] < 1 || $data['rating'] > 5) {
             $errors[] = "Rating must be an integer between 1 and 5.";
