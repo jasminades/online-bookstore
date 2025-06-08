@@ -18,14 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 
 require './../vendor/autoload.php';
-require './dao/Database.php';
+require 'rest/dao/Database.php';
 require './data/roles.php';
-
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-require './routes/AuthRoutes.php';
+require './rest/routes/AuthRoutes.php';
 Flight::register('auth_service', "AuthService");
 require_once __DIR__ . '/middleware/AuthMiddleware.php';
 
@@ -40,11 +39,11 @@ Flight::route('GET /', function() {
     echo "working!";
 });
 
-require_once './routes/UsersRoutes.php';
-require_once './routes/BooksRoutes.php';
-require_once './routes/CategoriesRoutes.php';
-require_once './routes/OrdersRoutes.php';
-require_once './routes/ReviewsRoutes.php';
+require_once './rest/routes/UsersRoutes.php';
+require_once './rest/routes/BooksRoutes.php';
+require_once './rest/routes/CategoriesRoutes.php';
+require_once './rest/routes/OrdersRoutes.php';
+require_once './rest/routes/ReviewsRoutes.php';
 
 
 

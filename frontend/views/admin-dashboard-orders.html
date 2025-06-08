@@ -1,124 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Book Store" />
-    <meta name="author" content="" />
-    <title>Book & Beyond</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css" />
-    <link href="../css/styles.css" rel="stylesheet" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book & Beyond</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/css/styles.css" rel="stylesheet" />
 </head>
 <body>
 
-    
+<section id="admin-dashboard">
+  <div class="admin-sidebar">
+    <h3 class="admin-heading">Admin Dashboard</h3>
+    <a href="admin-dashboard-books.html">Manage Books</a>
+    <a href="admin-dashboard-orders.html">Manage Orders</a>
+    <a href="admin-dashboard-users.html">Manage Users</a>
+    <a href="admin-dashboard-categories.html">Manage Categories</a>
+    <a href="admin-dashboard-reviews.html">Manage Reviews</a>
+    <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
+  </div>
 
-    <section id="admin-dashboard">
-        <div class="admin-sidebar">
-            <h3 class="admin-heading">Admin Dashboard</h3>
-            <a href="admin-dashboard-books.html">Manage Books</a>
-            <a href="admin-dashboard-orders.html">Manage Orders</a>
-            <a href="admin-dashboard-users.html">Users</a>
-            <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
-        </div>
-    
-        <div class="admin-content">
-            <header class="admin-masthead">
-                <div>
-                    <h1 class="admin-main-heading">Welcome to the Admin Dashboard</h1>
-                    <span class="admin-subheading">Manage Orders</span>
-                </div>
-            </header>
-    
-            <section id="admin-books">
-                <h1 class="admin-books-list-heading">Orders List</h1>
-                <table class="admin-book-list table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>User ID</th>
-                            <th>Total Price</th>
-                            <th>Status</th>
-                            <th>Created at</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-list">
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    </section>
+  
+  
+  <div class="admin-content">
+    <header class="admin-masthead">
+      <div>
+        <h1 class="admin-main-heading">Welcome to the Admin Dashboard</h1>
+        <span class="admin-subheading">Manage orders with ease</span>
+      </div>
+    </header>
 
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLogoutModal()">&times;</span>
-            <p>Are you sure you want to logout?</p>
-            <button class="btn confirm-btn" onclick="confirmLogout()">Yes</button>
-            <button class="btn cancel-btn" onclick="closeLogoutModal()">Cancel</button>
-        </div>
+  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addOrderModal">
+    Add Order
+  </button>
+
+    <div class="modal fade" id="addOrderModal" tabindex="-1" aria-labelledby="addOrderModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" id="addOrderForm">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addOrderModalLabel">Add an Order</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-user_id" class="form-label">User ID</label>
+              <input type="number" class="form-control" id="add-user_id" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-price" class="form-label">Total Price</label>
+              <input type="number" class="form-control" id="add-price" required>
+            </div>
+            <div class="mb-3">
+            <label for="add-status" class="form-label">Status</label>
+            <select class="form-select" id="add-status">
+              <option value="pending">Pending</option>
+              <option value="to_be_made">To Be Made</option>
+              <option value="completed">Completed</option>
+              <option value="paused">Paused</option>
+            </select>
+          </div>
+            <div class="mb-3">
+              <label for="add-book_id" class="form-label">Book ID</label>
+              <input type="number" step="0.01" class="form-control" id="add-book_id" required>
+            </div>
+            </div>
+            <div class="mb-3">
+              <label for="add-order_date" class="form-label">Order Date</label>
+              <input type="datetime-local" class="form-control" id="add-order_date" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-quantity" class="form-label">Quantity</label>
+              <input type="number" class="form-control" id="add-quantity" required>
+            </div>
+         
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Add Order</button>
+             </div>
+        </form>
+      </div>
     </div>
 
-    <!-- page footer-->
-    <footer class="border-top bg-dark text-white">
-        <div class="container">
-            <div class="row justify-content-center">
-                <p>&copy; 2025 Book & Beyond. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    
+    <section id="admin-orders">
+      <h1 class="admin-orders-list-heading">Orders List</h1>
+      <table class="admin-order-list table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Total Price</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Book ID</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="order-list"></tbody>
+      </table>
+    </section>
+  </div>
+</section>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gyb4f8LgBx5D5yVf3Hrt1VdtqPqaHlQ+IY3o6eF7pXxBe4bUqq7" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqP3A6JXlLf2dGFG2cXn6b6bXgZyT01DbF4T2+3G7KkzC" crossorigin="anonymous"></script>
-    
-    
-    <script>
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeLogoutModal()">&times;</span>
+    <p>Are you sure you want to logout?</p>
+    <button class="btn confirm-btn" onclick="confirmLogout()">Yes</button>
+    <button class="btn cancel-btn" onclick="closeLogoutModal()">Cancel</button>
+  </div>
+</div>
 
-        function openLogoutModal() {
-            document.getElementById("logoutModal").style.display = "block";
-        }
-        function closeLogoutModal() {
-            document.getElementById("logoutModal").style.display = "none";
-        }
-        function confirmLogout() {
-            window.location.href = "login.html";
-        }
 
-    document.addEventListener("DOMContentLoaded", function() {
-    fetch('http://localhost:8000/backend/orders')
-        .then(response => response.json())
-        .then(data => {
-            console.log("Fetched orders data:", data); 
 
-            const ordersList = document.getElementById('users-list'); 
-            if (!ordersList) {
-                console.error('users-list element not found!');
-                return;
-            }
 
-            data.forEach(order => {
-                console.log("Inserting order:", order); 
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${order.id}</td>
-                    <td>${order.user_id}</td>
-                    <td>${order.total_price}</td>
-                    <td>${order.status}</td>
-                    <td>${order.created_at}</td>
-                `;
-                ordersList.appendChild(row); 
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching orders:', error); 
-        });
-    });
+<script src="../services/OrdersService.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    </script>
-    
-
-    <script src="../js/app.js"></script>
-  
+<script>
+  OrdersService.init();
+</script>
 </body>
 </html>

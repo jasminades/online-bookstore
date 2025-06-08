@@ -23,12 +23,18 @@ let FeaturedBooksService = {
             books.forEach(function (book) {
                 let card = `
                     <div class="book-card">
-                         <img id="book-image" src="${book.image_url || '../static/images/book1.jpg'}" alt="Book Cover">
+                        <img id="book-image" src="${book.image_url || '../static/images/book1.jpg'}" alt="Book Cover">
                         <h3 class="book-title">${book.title}</h3>
                         <p class="book-author">by ${book.author}</p>
                         <p class="book-category">Category: ${book.category_name || 'Unknown'}</p>
                         <p class="book-price">$${parseFloat(book.price).toFixed(2)}</p>
-                        <button class="btn view-details" onclick="window.location.href='index.html#book-${book.id}'">View Details</button>
+                        <button class="btn view-details" onclick="showBookDetails(
+                            \`${book.title}\`,
+                            \`${book.author}\`,
+                            \`$${parseFloat(book.price).toFixed(2)}\`,
+                            \`${book.image_url || '../static/images/book1.jpg'}\`,
+                            \`${book.description || 'No description available.'}\`
+                        )">View Details</button>
                     </div>
                 `;
                 container.append(card);
@@ -38,3 +44,14 @@ let FeaturedBooksService = {
         }
     }
 };
+
+function showBookDetails(title, author, price, image, description) {
+    document.getElementById('bookDetailsModalLabel').textContent = title;
+    document.getElementById('modalBookAuthor').textContent = author;
+    document.getElementById('modalBookPrice').textContent = price;
+    document.getElementById('modalBookImage').src = image;
+    document.getElementById('modalBookDescription').innerHTML = description;
+
+    const modal = new bootstrap.Modal(document.getElementById('bookDetailsModal'));
+    modal.show();
+}

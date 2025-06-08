@@ -13,9 +13,8 @@
         <aside class="profile-info">
             <img src="../static/images/logo.jpg" alt="Profile Picture" class="profile-img">
             <div class="profile-details">
-                <h2>John Doe</h2>
-                <p>Username: johndoe123</p>
-                <p>Email Address: johndoe@example.com</p>
+                <h2 id="nameSurname"></h2>
+                <p>Email Address: <span id="email"></span></p>
                 <button class="btn edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
                 <button class="btn logout-btn" onclick="openLogoutModal()">Logout</button>
 
@@ -27,30 +26,54 @@
             <section id="previous-purchases" class="profile-section">
                 <h3>Previous Purchases</h3>
                 <div class="grid-container">
-                    <div class="profile-card">
-                        <img src="../static/images/book1.jpg" alt="Book Cover">
-                        <div class="card-details">
-                            <h4>Book Title</h4>
-                            <p>by Author Name</p>
-                            <p class="purchase-date">Purchased on: Jan 15, 2025</p>
-                        </div>
+                    <div id="books-cards-row" class="row row-cols-1 row-cols-md-3 g-4">
                     </div>
                 </div>
             </section>
 
-            <section id="wishlist" class="profile-section">
-                <h3>Wishlist</h3>
-                <p>No items in your wishlist yet.</p>
-            </section>
+           
 
-            <section id="review-history" class="profile-section">
-                <h3>Review History</h3>
-                <p>You haven't left any reviews yet.</p>
-            </section>
-        </div>
+     <section id="review-history" class="profile-section">
+    <h3>Review History</h3>
+    <div class="container mt-3">
+  <div class="row" id="user-reviews"></div>
+</div>
+
+
+
+ <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addReviewModal">
+        Add Review
+    </button>
+
+    <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" id="addReviewForm">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addReviewModalLabel">Add New Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="add-book_id" class="form-label">Book ID</label>
+              <input type="text" class="form-control" id="add-book_id" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-rating" class="form-label">Rating</label>
+              <input type="text" class="form-control" id="add-rating" required>
+            </div>
+            <div class="mb-3">
+              <label for="add-comment" class="form-label">Comment</label>
+              <input type="text" class="form-control" id="add-comment" required>
+            </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Add Review</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
-
-
+  </div>
+  
     <div id="logoutModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeLogoutModal()">&times;</span>
@@ -60,64 +83,40 @@
         </div>
     </div>
 
-<div id="editProfileModal" class="modal">
-    <div class="modal-content">
+<div id="editProfileModal" class="modal-edit">
+    <div class="modal-edit-content">
         <span class="close" onclick="closeEditProfileModal()">&times;</span>
         <h3>Edit Profile</h3>
         <form id="editProfileForm" onsubmit="saveProfileChanges(event)">
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" value="John Doe" required>
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" value="User " required>
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" value="johndoe123" required>
+    <label for="last_name">Full Name:</label>
+    <input type="text" id="last_name" value="User " required>
 
-            <label for="email">Email Address:</label>
-            <input type="email" id="email" value="johndoe@example.com" required>
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" value="user@user.com" required>
 
-            <div style="margin-top: 15px;">
-                <button class="btn confirm-btn" type="submit">Save</button>
-                <button class="btn cancel-btn" type="button" onclick="closeEditProfileModal()">Cancel</button>
-            </div>
-        </form>
+    <label for="profileImage">Profile Picture:</label>
+    <input type="file" id="profileImage" accept="image/*">
+
+    <div style="margin-top: 15px;">
+        <button class="btn confirm-btn" type="submit">Save</button>
+        <button class="btn cancel-btn" type="button" onclick="closeEditProfileModal()">Cancel</button>
+    </div>
+</form>
+
     </div>
 </div>
 
 
+
 </section>
 
-<script>
-function openLogoutModal() {
-    document.getElementById("logoutModal").style.display = "block";
-}
 
-function closeLogoutModal() {
-    document.getElementById("logoutModal").style.display = "none";
-}
-
-function confirmLogout() {
-    window.location.href = "login.html";
-}
-
-function openEditProfileModal() {
-    document.getElementById("editProfileModal").style.display = "block";
-}
-
-function closeEditProfileModal() {
-    document.getElementById("editProfileModal").style.display = "none";
-}
-
-function saveProfileChanges(event) {
-    event.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-
-    
-    document.querySelector(".profile-details h2").innerText = name;
-    document.querySelector(".profile-details p:nth-of-type(1)").innerText = "Username: " + username;
-    document.querySelector(".profile-details p:nth-of-type(2)").innerText = "Email Address: " + email;
-
-    closeEditProfileModal();
-}
-</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../utils/rest-client.js"></script>
+<script src="../utils/constants.js"></script>
+<script src="../utils/utils.js"></script>
+<script src="../services/ProfileService.js"></script>
+<script src="../services/UserReviewsService.js"></script>

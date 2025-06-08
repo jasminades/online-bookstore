@@ -8,9 +8,6 @@
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/styles.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-
-
 </head>
 <body>
 
@@ -30,65 +27,51 @@
     <header class="admin-masthead">
       <div>
         <h1 class="admin-main-heading">Welcome to the Admin Dashboard</h1>
-        <span class="admin-subheading">Manage your Book Store with ease</span>
+        <span class="admin-subheading">Manage Categories with ease</span>
       </div>
     </header>
 
-  <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addBookModal">
-    Add Book
-  </button>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+        Add Category
+    </button>
 
-    <div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" id="addBookForm">
+        <form class="modal-content" id="addCategoryForm">
           <div class="modal-header">
-            <h5 class="modal-title" id="addBookModalLabel">Add New Book</h5>
+            <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label for="add-title" class="form-label">Title</label>
-              <input type="text" class="form-control" id="add-title" required>
+              <label for="add-name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="add-name" required>
             </div>
-            <div class="mb-3">
-              <label for="add-author" class="form-label">Author</label>
-              <input type="text" class="form-control" id="add-author" required>
-            </div>
-            <div class="mb-3">
-              <label for="add-price" class="form-label">Price</label>
-              <input type="number" step="0.01" class="form-control" id="add-price" required>
-            </div>
-            <div class="mb-3">
-              <label for="add-category" class="form-label">Category ID</label>
-              <input type="number" class="form-control" id="add-category" required>
-            </div>
-          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Add Book</button>
+            <button type="submit" class="btn btn-success">Add Category</button>
           </div>
         </form>
       </div>
     </div>
-
-    <section id="admin-books">
-      <h1 class="admin-books-list-heading">Books List</h1>
-      <table class="admin-book-list table table-bordered">
+  </div>
+  
+    <section id="admin-categories">
+      <h1 class="admin-categories-list-heading">Categories List</h1>
+      <table class="admin-user-list table table-bordered">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Price</th>
             <th>Category</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="book-list"></tbody>
+        <tbody id="categories-list"></tbody>
       </table>
     </section>
   </div>
 </section>
+
 
 <div id="logoutModal" class="modal">
   <div class="modal-content">
@@ -97,50 +80,20 @@
     <button class="btn confirm-btn" onclick="confirmLogout()">Yes</button>
     <button class="btn cancel-btn" onclick="closeLogoutModal()">Cancel</button>
   </div>
+
 </div>
-
-<div id="editBookModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeEditBookModal()">&times;</span>
-    <h3>Edit Book</h3>
-    <form id="editBookForm">
-      <input type="hidden" id="edit-id" />
-
-      <label for="edit-title">Title:</label>
-      <input type="text" id="edit-title" required />
-
-      <label for="edit-author">Author:</label>
-      <input type="text" id="edit-author" required />
-
-      <label for="edit-price">Price:</label>
-      <input type="number" id="edit-price" required />
-
-      <label for="edit-category">Category ID:</label>
-      <input type="number" id="edit-category" required />
-
-      <div style="margin-top: 15px;">
-        <button class="btn confirm-btn" type="submit">Save</button>
-        <button class="btn cancel-btn" type="button" onclick="closeEditBookModal()">Cancel</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
 
- <script src="../utils/rest-client.js"></script>
+<script src="../utils/rest-client.js"></script>
 <script src="../utils/constants.js"></script>
-<script src="../services/BookService.js"></script>
+ <script src="../services/CategoriesService.js"></script>
 <script src="../assets/js/app.js"></script>
 
-<script>
-  BookService.init();
-</script>
+<script>CategoriesService.init()</script>
 
 </body>
 </html>
